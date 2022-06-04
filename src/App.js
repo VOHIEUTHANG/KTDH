@@ -1,15 +1,12 @@
 import "./App.css";
-import { Button } from "@mui/material";
+import Canvas from "./components/Canvas";
+import Controls from "./components/Controls";
 
 function App() {
   return (
-    <div className="App">
-      <h1>
-        This is my first project that I'm using material UI and Tailwind Css
-      </h1>
-      <Button className="" variant="outlined">
-        Click me
-      </Button>
+    <div className="flex justify-center items-center w-screen h-screen bg-gradient-to-r from-indigo-800 to-violet-500">
+      <Canvas />
+      <Controls />
     </div>
   );
 }
