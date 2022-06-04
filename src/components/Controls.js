@@ -11,14 +11,16 @@ function Controls() {
       </p>
       <div>
         <TextField />
+        <hr className="my-3" />
         <TextField />
+        <hr className="my-3" />
         <TextField />
       </div>
 
       <Button
         variant="outlined"
         size="large"
-        className="w-full mt-8 py-4"
+        className="w-full  py-4 "
         endIcon={<ViewInArIcon />}
       >
         3D coordinate
