@@ -7,8 +7,11 @@ function Canvas() {
   }, []);
   return (
     <canvas
+      id="canvas"
       ref={canvasRef}
-      className="w-[1200px] h-[800px] bg-white rounded-xl overflow-hidden"
+      className="bg-white rounded-xl overflow-hidden"
+      width="1200px"
+      height="800px"
     />
   );
 }
