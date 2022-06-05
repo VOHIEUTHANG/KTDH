@@ -11,22 +11,29 @@ function drawCoordinate(canvas) {
     y: Math.floor(FRAME_HEIGHT / 2),
   };
 
-  (function drawCoordinateSystem() {
-    for (let i = rootPoint.x + 5; i < FRAME_WIDTH; i += 5) {
-      drawRect(ctx, i, 0, 1, FRAME_HEIGHT, "#ccc");
-    }
-    for (let i = rootPoint.x - 5; i > 0; i -= 5) {
-      drawRect(ctx, i, 0, 1, FRAME_HEIGHT, "#ccc");
-    }
-    for (let i = rootPoint.y + 5; i < FRAME_HEIGHT; i += 5) {
-      drawRect(ctx, 0, i, FRAME_WIDTH, 1, "#ccc");
-    }
-    for (let i = rootPoint.y - 5; i > 0; i -= 5) {
-      drawRect(ctx, 0, i, FRAME_WIDTH, 1, "#ccc");
-    }
+  return {
+    drawCoordinateSystem: (isShowFullCoorindate = true) => {
+      if (isShowFullCoorindate) {
+        for (let i = rootPoint.x + 5; i < FRAME_WIDTH; i += 5) {
+          drawRect(ctx, i, 0, 1, FRAME_HEIGHT, "#ccc");
+        }
+        for (let i = rootPoint.x - 5; i > 0; i -= 5) {
+          drawRect(ctx, i, 0, 1, FRAME_HEIGHT, "#ccc");
+        }
+        for (let i = rootPoint.y + 5; i < FRAME_HEIGHT; i += 5) {
+          drawRect(ctx, 0, i, FRAME_WIDTH, 1, "#ccc");
+        }
+        for (let i = rootPoint.y - 5; i > 0; i -= 5) {
+          drawRect(ctx, 0, i, FRAME_WIDTH, 1, "#ccc");
+        }
+      }
 
-    drawRect(ctx, 0, rootPoint.y, FRAME_WIDTH, 1, "blue");
-    drawRect(ctx, rootPoint.x, 0, 1, FRAME_HEIGHT, "blue");
-  })();
+      drawRect(ctx, 0, rootPoint.y, FRAME_WIDTH, 1, "blue");
+      drawRect(ctx, rootPoint.x, 0, 1, FRAME_HEIGHT, "blue");
+    },
+    FRAME_WIDTH,
+    FRAME_HEIGHT,
+    ctx,
+  };
 }
 export default drawCoordinate;

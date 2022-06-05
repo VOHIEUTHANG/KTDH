@@ -1,10 +1,14 @@
 import { useRef, useEffect } from "react";
 import drawCoordinate from "../core/draw_coordinate";
-function Canvas() {
+function Canvas({ isShowCoordinate }) {
   const canvasRef = useRef();
   useEffect(() => {
-    drawCoordinate(canvasRef.current);
-  }, []);
+    const props = drawCoordinate(canvasRef.current);
+    props.drawCoordinateSystem(isShowCoordinate);
+    return () => {
+      props.ctx.clearRect(0, 0, props.FRAME_WIDTH, props.FRAME_WIDTH);
+    };
+  }, [isShowCoordinate]);
   return (
     <canvas
       id="canvas"
