@@ -66,13 +66,14 @@ const CC_fromComputerToHuman = (rootPoint, x, y) => {
 const CC_fromHumanToComputer = (rootPoint, x, y) => {
   return [rootPoint.x + x * 5, rootPoint.y - y * 5];
 };
-const draw = (ctx, rootPoint, coorList, color = "green") => {
+const draw = (ctx, rootPoint, coorList, color = [120, 120, 120]) => {
   coorList.forEach((coor) => {
     const [x, y] = CC_fromHumanToComputer(rootPoint, coor.x, coor.y);
-    putPixel(ctx, x, y, color, 3);
+    putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
   });
 };
 function tintColor(ctx, rootPoint, x, y, color, border) {
+  console.log(color);
   const [x_c, y_c] = CC_fromHumanToComputer(rootPoint, x, y);
   const pixelData = ctx.getImageData(x_c, y_c, 1, 1).data;
   const currentColor = [pixelData[0], pixelData[1], pixelData[2]];
@@ -94,7 +95,8 @@ const drawTrapezoid = (
   topLeftPoint,
   bottomLeftPoint,
   smallWidth,
-  color = "purple"
+  color = [230, 161, 35],
+  borderColor = [120, 120, 120]
 ) => {
   const largeWidth = smallWidth + 2 * (topLeftPoint.x - bottomLeftPoint.x);
   // left line
@@ -107,7 +109,7 @@ const drawTrapezoid = (
       topLeftPoint.x,
       topLeftPoint.y
     ),
-    "purple"
+    borderColor
   );
   // top line
   draw(
@@ -119,7 +121,7 @@ const drawTrapezoid = (
       topLeftPoint.x + smallWidth,
       topLeftPoint.y
     ),
-    "purple"
+    borderColor
   );
   // right line
   draw(
@@ -131,7 +133,7 @@ const drawTrapezoid = (
       bottomLeftPoint.x + largeWidth,
       bottomLeftPoint.y
     ),
-    "purple"
+    borderColor
   );
   // bottom line
   draw(
@@ -143,7 +145,7 @@ const drawTrapezoid = (
       bottomLeftPoint.x,
       bottomLeftPoint.y
     ),
-    "purple"
+    borderColor
   );
 
   tintColor(
@@ -151,30 +153,38 @@ const drawTrapezoid = (
     rootPoint,
     topLeftPoint.x + 1,
     topLeftPoint.y - 1,
-    [0, 0, 254],
-    [128, 0, 128]
+    color,
+    borderColor
   );
 };
-const drawTriangle = (ctx, rootPoint, p1, p2, p3, color = "purple") => {
+const drawTriangle = (
+  ctx,
+  rootPoint,
+  p1,
+  p2,
+  p3,
+  color = [250, 250, 20],
+  borderColor = [120, 120, 120]
+) => {
   draw(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(p1.x, p1.y, p2.x, p2.y),
-    color
+    borderColor
   );
   draw(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(p2.x, p2.y, p3.x, p3.y),
-    color
+    borderColor
   );
   draw(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(p3.x, p3.y, p1.x, p1.y),
-    color
+    borderColor
   );
-  tintColor(ctx, rootPoint, p3.x, p3.y - 3, [250, 250, 0], [128, 0, 128]);
+  tintColor(ctx, rootPoint, p3.x, p3.y - 3, color, borderColor);
 };
 
 export {
