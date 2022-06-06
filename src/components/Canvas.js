@@ -1,12 +1,18 @@
 import { useRef, useEffect } from "react";
+import draw_2D from "../core/draw_2D";
 import drawCoordinate from "../core/draw_coordinate";
 function Canvas({ isShowCoordinate }) {
   const canvasRef = useRef();
   useEffect(() => {
-    const props = drawCoordinate(canvasRef.current);
-    props.drawCoordinateSystem(isShowCoordinate);
+    const { drawCoordinateSystem, rootPoint, FRAME_HEIGHT, FRAME_WIDTH, ctx } =
+      drawCoordinate(canvasRef.current);
+    drawCoordinateSystem(isShowCoordinate);
+    draw_2D(ctx, rootPoint, FRAME_HEIGHT, FRAME_WIDTH);
+
+    const p = ctx.getImageData(0, 0, 1, 1).data;
+
     return () => {
-      props.ctx.clearRect(0, 0, props.FRAME_WIDTH, props.FRAME_WIDTH);
+      ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
     };
   }, [isShowCoordinate]);
   return (

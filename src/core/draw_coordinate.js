@@ -1,4 +1,4 @@
-import { drawLine, putPixel, drawRect } from "./draw_functions";
+import { drawRect } from "./draw_functions";
 
 function drawCoordinate(canvas) {
   const ctx = canvas.getContext("2d");
@@ -12,8 +12,8 @@ function drawCoordinate(canvas) {
   };
 
   return {
-    drawCoordinateSystem: (isShowFullCoorindate = true) => {
-      if (isShowFullCoorindate) {
+    drawCoordinateSystem: (isShowFullCoorindate = 1) => {
+      if (isShowFullCoorindate == 1) {
         for (let i = rootPoint.x + 5; i < FRAME_WIDTH; i += 5) {
           drawRect(ctx, i, 0, 1, FRAME_HEIGHT, "#ccc");
         }
@@ -27,12 +27,14 @@ function drawCoordinate(canvas) {
           drawRect(ctx, 0, i, FRAME_WIDTH, 1, "#ccc");
         }
       }
-
-      drawRect(ctx, 0, rootPoint.y, FRAME_WIDTH, 1, "blue");
-      drawRect(ctx, rootPoint.x, 0, 1, FRAME_HEIGHT, "blue");
+      if (isShowFullCoorindate !== 3) {
+        drawRect(ctx, 0, rootPoint.y, FRAME_WIDTH, 1, "blue");
+        drawRect(ctx, rootPoint.x, 0, 1, FRAME_HEIGHT, "blue");
+      }
     },
     FRAME_WIDTH,
     FRAME_HEIGHT,
+    rootPoint,
     ctx,
   };
 }

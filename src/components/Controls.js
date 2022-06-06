@@ -24,10 +24,16 @@ function Controls({ ShowCoordinate }) {
         className="p-4 mt-4 text-lg text-gray-500 "
         endIcon={<VisibilityOffIcon />}
         onClick={() => {
-          setShowCoordinate(!showCoordinate);
+          setShowCoordinate((prevState) => {
+            if (prevState == 3) {
+              return 1;
+            } else {
+              return prevState + 1;
+            }
+          });
         }}
       >
-        Hide Coordinate
+        Toggle Coordinate
       </Button>
 
       <Button
