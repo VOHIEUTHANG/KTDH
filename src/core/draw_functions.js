@@ -72,8 +72,48 @@ const draw = (ctx, rootPoint, coorList, color = [120, 120, 120]) => {
     putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
   });
 };
+const getAn8thCoordinateListOfCircleWidthBresenham = (r) => {
+  const coorList = [];
+  let x = 0;
+  let y = r;
+  let p = 3 - 2 * r;
+  coorList.push({ x, y });
+  while (x < y - 1) {
+    if (p < 0) {
+      p += 4 * x + 6;
+    } else {
+      p += 4 * (x - y) + 10;
+      y--;
+    }
+    x++;
+    coorList.push({ x, y });
+  }
+  return coorList;
+};
+const getFullCoordinateList = (an8thCoordinate, centerPoint) => {
+  const coorList = [...an8thCoordinate];
+  const lastCoor = an8thCoordinate[an8thCoordinate.length - 1];
+  const firstCoor = an8thCoordinate.shift();
+  for (let i = an8thCoordinate.length - 1; i >= 0; i--) {
+    const item = an8thCoordinate[i];
+    if (item.x !== item.y) {
+      coorList.push({ x: item.y, y: item.x });
+    }
+  }
+  coorList.push({ x: firstCoor.y, y: firstCoor.x });
+
+  for (let i = coorList.length - 2; i >= 0; i--) {
+    coorList.push({ x: coorList[i].x, y: -coorList[i].y });
+  }
+
+  for (let i = coorList.length - 2; i > 0; i--) {
+    coorList.push({ x: -coorList[i].x, y: coorList[i].y });
+  }
+  return coorList.map((coor) => {
+    return { x: coor.x + centerPoint.x, y: coor.y + centerPoint.y };
+  });
+};
 function tintColor(ctx, rootPoint, x, y, color, border) {
-  console.log(color);
   const [x_c, y_c] = CC_fromHumanToComputer(rootPoint, x, y);
   const pixelData = ctx.getImageData(x_c, y_c, 1, 1).data;
   const currentColor = [pixelData[0], pixelData[1], pixelData[2]];
@@ -186,6 +226,25 @@ const drawTriangle = (
   );
   tintColor(ctx, rootPoint, p3.x, p3.y - 3, color, borderColor);
 };
+const drawCircle = (
+  ctx,
+  rootPoint,
+  r,
+  centerPoint,
+  color = [250, 230, 110],
+  borderColor = [120, 120, 120]
+) => {
+  const an8thCoordinate = getAn8thCoordinateListOfCircleWidthBresenham(r);
+  const coorList = getFullCoordinateList(an8thCoordinate, centerPoint);
+  draw(ctx, rootPoint, coorList);
+  tintColor(ctx, rootPoint, centerPoint.x, centerPoint.y, color, borderColor);
+  const [x, y] = CC_fromHumanToComputer(
+    rootPoint,
+    centerPoint.x,
+    centerPoint.y
+  );
+  putPixel(ctx, x, y, "blue", 5);
+};
 
 export {
   drawLine,
@@ -197,4 +256,5 @@ export {
   draw,
   drawTrapezoid,
   drawTriangle,
+  drawCircle,
 };

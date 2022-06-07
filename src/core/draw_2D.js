@@ -3,6 +3,7 @@ import {
   draw,
   drawTrapezoid,
   drawTriangle,
+  drawCircle,
 } from "./draw_functions";
 
 export default function draw_2D(ctx, rootPoint, width, height) {
@@ -18,6 +19,11 @@ export default function draw_2D(ctx, rootPoint, width, height) {
       y: leftUpperPoint.y + triangleHeight,
     },
   };
+  const centerCircle = {
+    x: trianglePoint.p3.x,
+    y: trianglePoint.p3.y - triangleHeight / 2 - 2,
+  };
+
   drawTrapezoid(ctx, rootPoint, leftUpperPoint, leftBottomPoint, smallWidth);
   drawTriangle(
     ctx,
@@ -26,4 +32,5 @@ export default function draw_2D(ctx, rootPoint, width, height) {
     trianglePoint.p2,
     trianglePoint.p3
   );
+  drawCircle(ctx, rootPoint, 6, centerCircle);
 }
