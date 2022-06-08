@@ -3,7 +3,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Button } from "@mui/material/";
 import TextField from "./TextField";
 
-import { useEffect, useState } from "react";
 function Controls({ ShowCoordinate }) {
   const { showCoordinate, setShowCoordinate } = ShowCoordinate;
 

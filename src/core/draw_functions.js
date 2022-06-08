@@ -1,4 +1,8 @@
 import {
+  ConnectingAirportsOutlined,
+  ConstructionOutlined,
+} from "@mui/icons-material";
+import {
   matrixMultiply,
   createRotateMatrix,
   createTranslationMatrix,
@@ -297,7 +301,7 @@ const drawCircle = (
     centerPoint.x,
     centerPoint.y
   );
-  putPixel(ctx, x, y, "orange", 3);
+  putPixel(ctx, x, y, "green", 3);
 };
 const getPropellerCoorList = (
   centerCircle,
@@ -325,14 +329,7 @@ const getPropellerCoorList = (
     widthPropeller,
     heightPropeller
   );
-  // tintColor(
-  //   ctx,
-  //   rootPoint,
-  //   centerCircle.x + widthTotal - widthPropeller + 1,
-  //   centerCircle.y - 1 - 1,
-  //   color,
-  //   borderColor
-  // );
+
   return [...coorListMid, ...coorListTop, ...coorListRec];
 };
 const drawFourPropeller = (
@@ -343,7 +340,9 @@ const drawFourPropeller = (
   widthPropeller,
   heightPropeller,
   borderColor,
-  color
+  color,
+  setClearScreen,
+  setTimeoutID
 ) => {
   const getRotateCoorList = (initialCoorList, deg) => {
     return initialCoorList.map((coor) => {
@@ -358,11 +357,60 @@ const drawFourPropeller = (
       return coorItem[0];
     });
   };
+  const getFourRotateCoorInPropeller = (rightPointPropeller, centerCircle) => {
+    const rightPoint = matrixMultiply(
+      [[rightPointPropeller[0], rightPointPropeller[1], 1]],
+      createTranslationMatrix(centerCircle.x, centerCircle.y)
+    );
+    rightPoint[0].pop();
+    const topPoint = matrixMultiply(
+      [[rightPointPropeller[0], rightPointPropeller[1], 1]],
+      matrixMultiply(
+        createRotateMatrix(90),
+        createTranslationMatrix(centerCircle.x, centerCircle.y)
+      )
+    );
+    topPoint[0].pop();
+    const leftPoint = matrixMultiply(
+      [[rightPointPropeller[0], rightPointPropeller[1], 1]],
+      matrixMultiply(
+        createRotateMatrix(180),
+        createTranslationMatrix(centerCircle.x, centerCircle.y)
+      )
+    );
+    leftPoint[0].pop();
+    const bottomPoint = matrixMultiply(
+      [[rightPointPropeller[0], rightPointPropeller[1], 1]],
+      matrixMultiply(
+        createRotateMatrix(270),
+        createTranslationMatrix(centerCircle.x, centerCircle.y)
+      )
+    );
+    bottomPoint[0].pop();
+    return [...rightPoint, ...topPoint, ...leftPoint, ...bottomPoint];
+  };
+  const tintColorForPropeller = (
+    ctx,
+    rootPoint,
+    coorList,
+    color,
+    borderColor
+  ) => {
+    coorList.forEach((coor) => {
+      tintColor(ctx, rootPoint, coor[0], coor[1], color, borderColor);
+    });
+  };
   const rightCoorList_ObjectType = getPropellerCoorList(
     { x: 0, y: 0 },
     widthTotal,
     widthPropeller,
     heightPropeller
+  );
+
+  const pointInPropeller = [widthTotal - widthPropeller + 1, -2];
+  const fourRotateCoorInPropeller = getFourRotateCoorInPropeller(
+    pointInPropeller,
+    centerCircle
   );
 
   const topCoorList = getRotateCoorList(rightCoorList_ObjectType, 90);
@@ -373,11 +421,25 @@ const drawFourPropeller = (
     rightCoorList,
     createTranslationMatrix(centerCircle.x, centerCircle.y)
   );
+  drawWidthArrayCoor(ctx, rootPoint, rightCoorList, borderColor);
+  drawWidthArrayCoor(ctx, rootPoint, topCoorList, borderColor);
+  drawWidthArrayCoor(ctx, rootPoint, leftCoorList, borderColor);
+  drawWidthArrayCoor(ctx, rootPoint, bottomCoorList, borderColor);
+  tintColorForPropeller(
+    ctx,
+    rootPoint,
+    fourRotateCoorInPropeller,
+    color,
+    borderColor
+  );
 
-  drawWidthArrayCoor(ctx, rootPoint, rightCoorList);
-  drawWidthArrayCoor(ctx, rootPoint, topCoorList);
-  drawWidthArrayCoor(ctx, rootPoint, leftCoorList);
-  drawWidthArrayCoor(ctx, rootPoint, bottomCoorList);
+  // const TimeoutID = setTimeout(() => {
+  //   setTimeoutID(TimeoutID);
+  //   clearTimeout(TimeoutID);
+  //   setClearScreen((prevState) => !prevState);
+  // }, 1000);
+
+  drawCircle(ctx, rootPoint, 6, centerCircle);
 };
 export {
   drawLine,

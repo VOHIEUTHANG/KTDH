@@ -6,9 +6,16 @@ import {
   drawFourPropeller,
 } from "./draw_functions";
 
-export default function draw_2D(ctx, rootPoint, width, height) {
+export default function draw_2D(
+  ctx,
+  rootPoint,
+  width,
+  height,
+  setClearScreen,
+  setTimeoutID
+) {
   const leftUpperPoint = { x: -70, y: 6 };
-  const leftBottomPoint = { x: -80, y: -70 };
+  const leftBottomPoint = { x: -76, y: -70 };
   const smallWidth = 40;
   const triangleHeight = 20;
   const trianglePoint = {
@@ -39,8 +46,9 @@ export default function draw_2D(ctx, rootPoint, width, height) {
     60,
     50,
     10,
-    [50, 100, 10],
-    [255, 255, 0]
+    [100, 100, 100],
+    [200, 160, 0],
+    setClearScreen,
+    setTimeoutID
   );
-  drawCircle(ctx, rootPoint, 6, centerCircle);
 }
