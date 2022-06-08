@@ -59,7 +59,7 @@ const getCoorListWidthBresenham = (x1, y1, x2, y2) => {
   }
   return coorList;
 };
-// CC meaning convert coordinate
+// CC mean convert coordinate
 const CC_fromComputerToHuman = (rootPoint, x, y) => {
   return [Math.round((x - rootPoint.x) / 5), Math.floor((rootPoint.y - y) / 5)];
 };
@@ -113,7 +113,7 @@ const getFullCoordinateList = (an8thCoordinate, centerPoint) => {
     return { x: coor.x + centerPoint.x, y: coor.y + centerPoint.y };
   });
 };
-function tintColor(ctx, rootPoint, x, y, color, border) {
+const tintColor = (ctx, rootPoint, x, y, color, border) => {
   const [x_c, y_c] = CC_fromHumanToComputer(rootPoint, x, y);
   const pixelData = ctx.getImageData(x_c, y_c, 1, 1).data;
   const currentColor = [pixelData[0], pixelData[1], pixelData[2]];
@@ -128,7 +128,69 @@ function tintColor(ctx, rootPoint, x, y, color, border) {
     tintColor(ctx, rootPoint, x, y + 1, color, border);
   }
   return;
-}
+};
+const drawRectangle = (
+  ctx,
+  rootPoint,
+  topUpperPoint,
+  width,
+  height,
+  borderColor,
+  color
+) => {
+  draw(
+    ctx,
+    rootPoint,
+    getCoorListWidthBresenham(
+      topUpperPoint.x,
+      topUpperPoint.y,
+      topUpperPoint.x + width,
+      topUpperPoint.y
+    ),
+    borderColor
+  );
+  draw(
+    ctx,
+    rootPoint,
+    getCoorListWidthBresenham(
+      topUpperPoint.x + width,
+      topUpperPoint.y,
+      topUpperPoint.x + width,
+      topUpperPoint.y - height
+    ),
+    borderColor
+  );
+  draw(
+    ctx,
+    rootPoint,
+    getCoorListWidthBresenham(
+      topUpperPoint.x + width,
+      topUpperPoint.y - height,
+      topUpperPoint.x,
+      topUpperPoint.y - height
+    ),
+    borderColor
+  );
+  draw(
+    ctx,
+    rootPoint,
+    getCoorListWidthBresenham(
+      topUpperPoint.x,
+      topUpperPoint.y - height,
+      topUpperPoint.x,
+      topUpperPoint.y
+    ),
+    borderColor
+  );
+  tintColor(
+    ctx,
+    rootPoint,
+    topUpperPoint.x + 1,
+    topUpperPoint.y - 1,
+    color,
+    borderColor
+  );
+};
 const drawTrapezoid = (
   ctx,
   rootPoint,
@@ -243,7 +305,44 @@ const drawCircle = (
     centerPoint.x,
     centerPoint.y
   );
-  putPixel(ctx, x, y, "blue", 5);
+  putPixel(ctx, x, y, "orange", 3);
+};
+const drawPropeller = (
+  ctx,
+  rootPoint,
+  centerCircle,
+  widthTotal,
+  widthPropeller,
+  heightPropeller,
+  borderColor,
+  color
+) => {
+  const coorListMid = getCoorListWidthBresenham(
+    centerCircle.x + 1,
+    centerCircle.y,
+    centerCircle.x + widthTotal,
+    centerCircle.y
+  );
+  const coorListTop = getCoorListWidthBresenham(
+    centerCircle.x + 1,
+    centerCircle.y + 1,
+    centerCircle.x + widthTotal,
+    centerCircle.y + 1
+  );
+  draw(ctx, rootPoint, coorListMid, borderColor);
+  draw(ctx, rootPoint, coorListTop, borderColor);
+  drawRectangle(
+    ctx,
+    rootPoint,
+    {
+      x: centerCircle.x + widthTotal - widthPropeller,
+      y: centerCircle.y - 1,
+    },
+    widthPropeller,
+    heightPropeller,
+    borderColor,
+    color
+  );
 };
 
 export {
@@ -257,4 +356,5 @@ export {
   drawTrapezoid,
   drawTriangle,
   drawCircle,
+  drawPropeller,
 };

@@ -1,9 +1,8 @@
 import {
-  getCoorListWidthBresenham,
-  draw,
   drawTrapezoid,
   drawTriangle,
   drawCircle,
+  drawPropeller,
 } from "./draw_functions";
 
 export default function draw_2D(ctx, rootPoint, width, height) {
@@ -31,6 +30,16 @@ export default function draw_2D(ctx, rootPoint, width, height) {
     trianglePoint.p1,
     trianglePoint.p2,
     trianglePoint.p3
+  );
+  drawPropeller(
+    ctx,
+    rootPoint,
+    centerCircle,
+    70,
+    50,
+    10,
+    [50, 100, 10],
+    [255, 255, 0]
   );
   drawCircle(ctx, rootPoint, 6, centerCircle);
 }

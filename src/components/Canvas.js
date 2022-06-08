@@ -8,9 +8,6 @@ function Canvas({ isShowCoordinate }) {
       drawCoordinate(canvasRef.current);
     drawCoordinateSystem(isShowCoordinate);
     draw_2D(ctx, rootPoint, FRAME_HEIGHT, FRAME_WIDTH);
-
-    const p = ctx.getImageData(0, 0, 1, 1).data;
-
     return () => {
       ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
     };
