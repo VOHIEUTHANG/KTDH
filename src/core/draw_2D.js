@@ -3,11 +3,12 @@ import {
   drawTriangle,
   drawCircle,
   drawPropeller,
+  drawFourPropeller,
 } from "./draw_functions";
 
 export default function draw_2D(ctx, rootPoint, width, height) {
-  const leftUpperPoint = { x: -80, y: 20 };
-  const leftBottomPoint = { x: -90, y: -50 };
+  const leftUpperPoint = { x: -70, y: 6 };
+  const leftBottomPoint = { x: -80, y: -70 };
   const smallWidth = 40;
   const triangleHeight = 20;
   const trianglePoint = {
@@ -31,11 +32,11 @@ export default function draw_2D(ctx, rootPoint, width, height) {
     trianglePoint.p2,
     trianglePoint.p3
   );
-  drawPropeller(
+  drawFourPropeller(
     ctx,
     rootPoint,
     centerCircle,
-    70,
+    60,
     50,
     10,
     [50, 100, 10],

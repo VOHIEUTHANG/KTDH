@@ -1,3 +1,9 @@
+import {
+  matrixMultiply,
+  createRotateMatrix,
+  createTranslationMatrix,
+  convertMatrixToArray,
+} from "./matrix_calculator";
 const drawLine = (ctx, x1, y1, x2, y2, color = "black") => {
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
@@ -66,9 +72,25 @@ const CC_fromComputerToHuman = (rootPoint, x, y) => {
 const CC_fromHumanToComputer = (rootPoint, x, y) => {
   return [rootPoint.x + x * 5, rootPoint.y - y * 5];
 };
-const draw = (ctx, rootPoint, coorList, color = [120, 120, 120]) => {
+const drawWidthObjectCoor = (
+  ctx,
+  rootPoint,
+  coorList,
+  color = [120, 120, 120]
+) => {
   coorList.forEach((coor) => {
     const [x, y] = CC_fromHumanToComputer(rootPoint, coor.x, coor.y);
+    putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
+  });
+};
+const drawWidthArrayCoor = (
+  ctx,
+  rootPoint,
+  coorList,
+  color = [120, 120, 120]
+) => {
+  coorList.forEach((coor) => {
+    const [x, y] = CC_fromHumanToComputer(rootPoint, coor[0], coor[1]);
     putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
   });
 };
@@ -129,67 +151,37 @@ const tintColor = (ctx, rootPoint, x, y, color, border) => {
   }
   return;
 };
-const drawRectangle = (
-  ctx,
-  rootPoint,
-  topUpperPoint,
-  width,
-  height,
-  borderColor,
-  color
-) => {
-  draw(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      topUpperPoint.x,
-      topUpperPoint.y,
-      topUpperPoint.x + width,
-      topUpperPoint.y
-    ),
-    borderColor
+const getRectangleCoorList = (topUpperPoint, width, height) => {
+  const TopLineCoorList = getCoorListWidthBresenham(
+    topUpperPoint.x,
+    topUpperPoint.y,
+    topUpperPoint.x + width,
+    topUpperPoint.y
   );
-  draw(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      topUpperPoint.x + width,
-      topUpperPoint.y,
-      topUpperPoint.x + width,
-      topUpperPoint.y - height
-    ),
-    borderColor
+  const RightLineCoorList = getCoorListWidthBresenham(
+    topUpperPoint.x + width,
+    topUpperPoint.y,
+    topUpperPoint.x + width,
+    topUpperPoint.y - height
   );
-  draw(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      topUpperPoint.x + width,
-      topUpperPoint.y - height,
-      topUpperPoint.x,
-      topUpperPoint.y - height
-    ),
-    borderColor
+  const BottomLineCoorList = getCoorListWidthBresenham(
+    topUpperPoint.x + width,
+    topUpperPoint.y - height,
+    topUpperPoint.x,
+    topUpperPoint.y - height
   );
-  draw(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      topUpperPoint.x,
-      topUpperPoint.y - height,
-      topUpperPoint.x,
-      topUpperPoint.y
-    ),
-    borderColor
+  const LeftLineCoorList = getCoorListWidthBresenham(
+    topUpperPoint.x,
+    topUpperPoint.y - height,
+    topUpperPoint.x,
+    topUpperPoint.y
   );
-  tintColor(
-    ctx,
-    rootPoint,
-    topUpperPoint.x + 1,
-    topUpperPoint.y - 1,
-    color,
-    borderColor
-  );
+  return [
+    ...TopLineCoorList,
+    ...RightLineCoorList,
+    ...BottomLineCoorList,
+    ...LeftLineCoorList,
+  ];
 };
 const drawTrapezoid = (
   ctx,
@@ -202,7 +194,7 @@ const drawTrapezoid = (
 ) => {
   const largeWidth = smallWidth + 2 * (topLeftPoint.x - bottomLeftPoint.x);
   // left line
-  draw(
+  drawWidthObjectCoor(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(
@@ -214,7 +206,7 @@ const drawTrapezoid = (
     borderColor
   );
   // top line
-  draw(
+  drawWidthObjectCoor(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(
@@ -226,7 +218,7 @@ const drawTrapezoid = (
     borderColor
   );
   // right line
-  draw(
+  drawWidthObjectCoor(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(
@@ -238,7 +230,7 @@ const drawTrapezoid = (
     borderColor
   );
   // bottom line
-  draw(
+  drawWidthObjectCoor(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(
@@ -268,19 +260,19 @@ const drawTriangle = (
   color = [250, 250, 20],
   borderColor = [120, 120, 120]
 ) => {
-  draw(
+  drawWidthObjectCoor(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(p1.x, p1.y, p2.x, p2.y),
     borderColor
   );
-  draw(
+  drawWidthObjectCoor(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(p2.x, p2.y, p3.x, p3.y),
     borderColor
   );
-  draw(
+  drawWidthObjectCoor(
     ctx,
     rootPoint,
     getCoorListWidthBresenham(p3.x, p3.y, p1.x, p1.y),
@@ -298,7 +290,7 @@ const drawCircle = (
 ) => {
   const an8thCoordinate = getAn8thCoordinateListOfCircleWidthBresenham(r);
   const coorList = getFullCoordinateList(an8thCoordinate, centerPoint);
-  draw(ctx, rootPoint, coorList);
+  drawWidthObjectCoor(ctx, rootPoint, coorList);
   tintColor(ctx, rootPoint, centerPoint.x, centerPoint.y, color, borderColor);
   const [x, y] = CC_fromHumanToComputer(
     rootPoint,
@@ -307,15 +299,11 @@ const drawCircle = (
   );
   putPixel(ctx, x, y, "orange", 3);
 };
-const drawPropeller = (
-  ctx,
-  rootPoint,
+const getPropellerCoorList = (
   centerCircle,
   widthTotal,
   widthPropeller,
-  heightPropeller,
-  borderColor,
-  color
+  heightPropeller
 ) => {
   const coorListMid = getCoorListWidthBresenham(
     centerCircle.x + 1,
@@ -329,22 +317,68 @@ const drawPropeller = (
     centerCircle.x + widthTotal,
     centerCircle.y + 1
   );
-  draw(ctx, rootPoint, coorListMid, borderColor);
-  draw(ctx, rootPoint, coorListTop, borderColor);
-  drawRectangle(
-    ctx,
-    rootPoint,
+  const coorListRec = getRectangleCoorList(
     {
       x: centerCircle.x + widthTotal - widthPropeller,
       y: centerCircle.y - 1,
     },
     widthPropeller,
-    heightPropeller,
-    borderColor,
-    color
+    heightPropeller
   );
+  // tintColor(
+  //   ctx,
+  //   rootPoint,
+  //   centerCircle.x + widthTotal - widthPropeller + 1,
+  //   centerCircle.y - 1 - 1,
+  //   color,
+  //   borderColor
+  // );
+  return [...coorListMid, ...coorListTop, ...coorListRec];
 };
+const drawFourPropeller = (
+  ctx,
+  rootPoint,
+  centerCircle,
+  widthTotal,
+  widthPropeller,
+  heightPropeller,
+  borderColor,
+  color
+) => {
+  const getRotateCoorList = (initialCoorList, deg) => {
+    return initialCoorList.map((coor) => {
+      const coorItem = matrixMultiply(
+        [[coor.x, coor.y, 1]],
+        matrixMultiply(
+          createRotateMatrix(deg),
+          createTranslationMatrix(centerCircle.x, centerCircle.y)
+        )
+      );
+      coorItem[0].pop();
+      return coorItem[0];
+    });
+  };
+  const rightCoorList_ObjectType = getPropellerCoorList(
+    { x: 0, y: 0 },
+    widthTotal,
+    widthPropeller,
+    heightPropeller
+  );
 
+  const topCoorList = getRotateCoorList(rightCoorList_ObjectType, 90);
+  const leftCoorList = getRotateCoorList(rightCoorList_ObjectType, 180);
+  const bottomCoorList = getRotateCoorList(rightCoorList_ObjectType, 270);
+  let rightCoorList = getRotateCoorList(rightCoorList_ObjectType, 0);
+  rightCoorList = matrixMultiply(
+    rightCoorList,
+    createTranslationMatrix(centerCircle.x, centerCircle.y)
+  );
+
+  drawWidthArrayCoor(ctx, rootPoint, rightCoorList);
+  drawWidthArrayCoor(ctx, rootPoint, topCoorList);
+  drawWidthArrayCoor(ctx, rootPoint, leftCoorList);
+  drawWidthArrayCoor(ctx, rootPoint, bottomCoorList);
+};
 export {
   drawLine,
   putPixel,
@@ -352,9 +386,10 @@ export {
   getCoorListWidthBresenham,
   CC_fromComputerToHuman,
   CC_fromHumanToComputer,
-  draw,
+  drawWidthObjectCoor as draw,
   drawTrapezoid,
   drawTriangle,
   drawCircle,
-  drawPropeller,
+  getPropellerCoorList as drawPropeller,
+  drawFourPropeller,
 };
