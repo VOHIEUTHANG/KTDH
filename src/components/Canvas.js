@@ -4,11 +4,10 @@ import draw_2D from "../core/draw_2D";
 import drawCoordinate from "../core/draw_coordinate";
 
 function Canvas({ isShowCoordinate }) {
-  const [clearScreen, setClearScreen] = useState(false);
   const [timeoutID, setTimeoutID] = useState(-1);
+  const [degree, setDegree] = useState(0);
   const canvasRef = useRef();
   useEffect(() => {
-    console.log("callback in useEffect running...");
     const { drawCoordinateSystem, rootPoint, FRAME_HEIGHT, FRAME_WIDTH, ctx } =
       drawCoordinate(canvasRef.current);
     drawCoordinateSystem(isShowCoordinate);
@@ -17,15 +16,15 @@ function Canvas({ isShowCoordinate }) {
       rootPoint,
       FRAME_HEIGHT,
       FRAME_WIDTH,
-      setClearScreen,
-      setTimeoutID
+      setTimeoutID,
+      setDegree,
+      degree
     );
     return () => {
-      console.log("cleanup function in useEffect running...");
       ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
       clearTimeout(timeoutID);
     };
-  }, [isShowCoordinate, clearScreen]);
+  }, [isShowCoordinate, degree]);
   return (
     <canvas
       id="canvas"

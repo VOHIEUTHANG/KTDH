@@ -1,3 +1,4 @@
+import { isOptionGroup } from "@mui/base";
 import {
   drawTrapezoid,
   drawTriangle,
@@ -11,8 +12,9 @@ export default function draw_2D(
   rootPoint,
   width,
   height,
-  setClearScreen,
-  setTimeoutID
+  setTimeoutID,
+  setDegree,
+  degree
 ) {
   const leftUpperPoint = { x: -70, y: 6 };
   const leftBottomPoint = { x: -76, y: -70 };
@@ -39,6 +41,7 @@ export default function draw_2D(
     trianglePoint.p2,
     trianglePoint.p3
   );
+
   drawFourPropeller(
     ctx,
     rootPoint,
@@ -48,7 +51,18 @@ export default function draw_2D(
     10,
     [100, 100, 100],
     [200, 160, 0],
-    setClearScreen,
-    setTimeoutID
+    degree
   );
+
+  const TimeoutID = setTimeout(() => {
+    setTimeoutID(TimeoutID);
+    clearTimeout(TimeoutID);
+    setDegree((prevDeg) => {
+      console.log(prevDeg);
+      if (prevDeg >= 360) {
+        return 0;
+      }
+      return (prevDeg += 2);
+    });
+  }, 10);
 }

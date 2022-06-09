@@ -69,6 +69,29 @@ const getCoorListWidthBresenham = (x1, y1, x2, y2) => {
   }
   return coorList;
 };
+const getRotateCoorList = (initialCoorList, deg, translationPoint) => {
+  return initialCoorList.map((coor) => {
+    const coorItem = matrixMultiply(
+      [[coor.x, coor.y, 1]],
+      matrixMultiply(
+        createRotateMatrix(deg),
+        createTranslationMatrix(translationPoint.x, translationPoint.y)
+      )
+    );
+    coorItem[0].pop();
+    return coorItem[0].map((coor) => Math.round(coor));
+  });
+};
+
+const getRotateCoor = (coor, deg) => {
+  const coorItem = matrixMultiply(
+    [[coor.x, coor.y, 1]],
+    createRotateMatrix(deg)
+  );
+  coorItem[0].pop();
+  return coorItem[0].map((coor) => Math.round(coor));
+};
+
 // CC mean convert coordinate
 const CC_fromComputerToHuman = (rootPoint, x, y) => {
   return [Math.round((x - rootPoint.x) / 5), Math.floor((rootPoint.y - y) / 5)];
@@ -341,22 +364,8 @@ const drawFourPropeller = (
   heightPropeller,
   borderColor,
   color,
-  setClearScreen,
-  setTimeoutID
+  deg
 ) => {
-  const getRotateCoorList = (initialCoorList, deg) => {
-    return initialCoorList.map((coor) => {
-      const coorItem = matrixMultiply(
-        [[coor.x, coor.y, 1]],
-        matrixMultiply(
-          createRotateMatrix(deg),
-          createTranslationMatrix(centerCircle.x, centerCircle.y)
-        )
-      );
-      coorItem[0].pop();
-      return coorItem[0];
-    });
-  };
   const getFourRotateCoorInPropeller = (rightPointPropeller, centerCircle) => {
     const rightPoint = matrixMultiply(
       [[rightPointPropeller[0], rightPointPropeller[1], 1]],
@@ -400,6 +409,7 @@ const drawFourPropeller = (
       tintColor(ctx, rootPoint, coor[0], coor[1], color, borderColor);
     });
   };
+
   const rightCoorList_ObjectType = getPropellerCoorList(
     { x: 0, y: 0 },
     widthTotal,
@@ -407,20 +417,36 @@ const drawFourPropeller = (
     heightPropeller
   );
 
-  const pointInPropeller = [widthTotal - widthPropeller + 1, -2];
-  const fourRotateCoorInPropeller = getFourRotateCoorInPropeller(
-    pointInPropeller,
+  const topCoorList = getRotateCoorList(
+    rightCoorList_ObjectType,
+    90 + deg,
+    centerCircle
+  );
+  const leftCoorList = getRotateCoorList(
+    rightCoorList_ObjectType,
+    180 + deg,
+    centerCircle
+  );
+  const bottomCoorList = getRotateCoorList(
+    rightCoorList_ObjectType,
+    270 + deg,
+    centerCircle
+  );
+  let rightCoorList = getRotateCoorList(
+    rightCoorList_ObjectType,
+    deg,
     centerCircle
   );
 
-  const topCoorList = getRotateCoorList(rightCoorList_ObjectType, 90);
-  const leftCoorList = getRotateCoorList(rightCoorList_ObjectType, 180);
-  const bottomCoorList = getRotateCoorList(rightCoorList_ObjectType, 270);
-  let rightCoorList = getRotateCoorList(rightCoorList_ObjectType, 0);
-  rightCoorList = matrixMultiply(
-    rightCoorList,
-    createTranslationMatrix(centerCircle.x, centerCircle.y)
+  const pointInPropeller = { x: widthTotal - widthPropeller + 10, y: -6 };
+
+  const newCoorLocation = getRotateCoor(pointInPropeller, deg);
+
+  const fourRotateCoorInPropeller = getFourRotateCoorInPropeller(
+    newCoorLocation,
+    centerCircle
   );
+
   drawWidthArrayCoor(ctx, rootPoint, rightCoorList, borderColor);
   drawWidthArrayCoor(ctx, rootPoint, topCoorList, borderColor);
   drawWidthArrayCoor(ctx, rootPoint, leftCoorList, borderColor);
@@ -432,12 +458,6 @@ const drawFourPropeller = (
     color,
     borderColor
   );
-
-  // const TimeoutID = setTimeout(() => {
-  //   setTimeoutID(TimeoutID);
-  //   clearTimeout(TimeoutID);
-  //   setClearScreen((prevState) => !prevState);
-  // }, 1000);
 
   drawCircle(ctx, rootPoint, 6, centerCircle);
 };
