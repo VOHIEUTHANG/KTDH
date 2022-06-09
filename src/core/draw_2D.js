@@ -81,7 +81,7 @@ export default function draw_2D(
     50,
     10,
     [100, 100, 100],
-    [200, 160, 0],
+    [200, 230, 200],
     degree
   );
 
