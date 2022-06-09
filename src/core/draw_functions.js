@@ -566,4 +566,5 @@ export {
   drawFourPropeller,
   drawDoorOfWindmill,
   drawLake,
+  drawWidthObjectCoor,
 };

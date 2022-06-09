@@ -5,6 +5,7 @@ import {
   drawFourPropeller,
   drawDoorOfWindmill,
   drawLake,
+  drawWidthObjectCoor,
 } from "./draw_functions";
 
 const drawWindmill = (
@@ -99,7 +100,7 @@ const drawWindmill = (
   //   });
   // }, 1);
 };
-const drawHouse = (ctx, rootPoint) => {
+const drawHouse = (ctx, rootPoint, symmetricalLine) => {
   const leftUpperPoint = { x: 40, y: 74 };
   const leftBottomPoint = { x: 30, y: 50 };
   const roofWidth = 40;
@@ -179,7 +180,12 @@ const drawHouse = (ctx, rootPoint) => {
     ...pillarRightCoorList,
   ];
 
-  console.log(houseCoorList);
+  const houseShadowCoorList = houseCoorList.map((coor) => ({
+    ...coor,
+    y: 2 * symmetricalLine - coor.y,
+  }));
+
+  drawWidthObjectCoor(ctx, rootPoint, houseShadowCoorList, [0, 0, 0]);
 };
 export default function draw_2D(
   ctx,
@@ -190,6 +196,7 @@ export default function draw_2D(
   setDegree,
   degree
 ) {
+  drawHouse(ctx, rootPoint, 20);
   drawLake(
     ctx,
     rootPoint,
@@ -199,6 +206,5 @@ export default function draw_2D(
     [150, 150, 150],
     [118, 211, 232]
   );
-  drawHouse(ctx, rootPoint);
   drawWindmill(ctx, rootPoint, width, height, setTimeoutID, setDegree, degree);
 }
