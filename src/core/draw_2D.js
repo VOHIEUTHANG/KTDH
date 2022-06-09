@@ -1,12 +1,13 @@
 import {
   drawTrapezoid,
+  drawRectangle,
   drawTriangle,
   drawFourPropeller,
-  drawPillarBase,
   drawDoorOfWindmill,
+  drawLake,
 } from "./draw_functions";
 
-export default function draw_2D(
+const drawWindmill = (
   ctx,
   rootPoint,
   width,
@@ -14,7 +15,7 @@ export default function draw_2D(
   setTimeoutID,
   setDegree,
   degree
-) {
+) => {
   const leftUpperPoint = { x: -70, y: 6 };
   const leftBottomPoint = { x: -76, y: -70 };
   const smallWidth = 40;
@@ -50,7 +51,8 @@ export default function draw_2D(
     trianglePoint.p2,
     trianglePoint.p3
   );
-  drawPillarBase(
+
+  drawRectangle(
     ctx,
     rootPoint,
     pillarBaseTopUpperPoint,
@@ -81,19 +83,122 @@ export default function draw_2D(
     50,
     10,
     [100, 100, 100],
-    [200, 230, 200],
+    [230, 250, 200],
     degree
   );
 
-  const TimeoutID = setTimeout(() => {
-    setTimeoutID(TimeoutID);
-    clearTimeout(TimeoutID);
-    setDegree((prevDeg) => {
-      console.log(prevDeg);
-      if (prevDeg >= 360) {
-        return 0;
-      }
-      return (prevDeg += 2);
-    });
-  }, 1);
+  // const TimeoutID = setTimeout(() => {
+  //   setTimeoutID(TimeoutID);
+  //   clearTimeout(TimeoutID);
+  //   setDegree((prevDeg) => {
+  //     console.log(prevDeg);
+  //     if (prevDeg >= 360) {
+  //       return 0;
+  //     }
+  //     return (prevDeg += 2);
+  //   });
+  // }, 1);
+};
+const drawHouse = (ctx, rootPoint) => {
+  const leftUpperPoint = { x: 40, y: 74 };
+  const leftBottomPoint = { x: 30, y: 50 };
+  const roofWidth = 40;
+  const houseHeight = 14;
+  const doorWidth = 10;
+  const doorHeight = houseHeight / 2 + 2;
+  const bottomCenterPoint = {
+    x: 40 + Math.round(roofWidth / 2),
+    y: 50 - houseHeight,
+  };
+  // draw roof
+  const roofCoorList = drawTrapezoid(
+    ctx,
+    rootPoint,
+    leftUpperPoint,
+    leftBottomPoint,
+    roofWidth,
+    [245, 214, 76],
+    [140, 140, 140]
+  );
+  // draw wall ==========>
+  const wallCoorList = drawRectangle(
+    ctx,
+    rootPoint,
+    { x: 36, y: 50 },
+    roofWidth + 8,
+    houseHeight,
+    [140, 140, 140],
+    [200, 200, 200]
+  );
+  // draw door ==========>
+  const doorCoorList = drawRectangle(
+    ctx,
+    rootPoint,
+    {
+      x: bottomCenterPoint.x - doorWidth / 2,
+      y: bottomCenterPoint.y + doorHeight,
+    },
+    doorWidth,
+    doorHeight,
+    [140, 140, 140],
+    [242, 242, 90]
+  );
+
+  // draw pillar ============>
+  const pillarLeftCoorList = drawRectangle(
+    ctx,
+    rootPoint,
+    {
+      x: bottomCenterPoint.x - roofWidth / 2 + 1,
+      y: bottomCenterPoint.y,
+    },
+    5,
+    12,
+    [140, 140, 140],
+    [66, 43, 95]
+  );
+
+  const pillarRightCoorList = drawRectangle(
+    ctx,
+    rootPoint,
+    {
+      x: bottomCenterPoint.x + roofWidth / 2 - 6,
+      y: bottomCenterPoint.y,
+    },
+    5,
+    12,
+    [140, 140, 140],
+    [66, 43, 95]
+  );
+
+  const houseCoorList = [
+    ...roofCoorList,
+    ...wallCoorList,
+    ...doorCoorList,
+    ...pillarLeftCoorList,
+    ...pillarRightCoorList,
+  ];
+
+  console.log(houseCoorList);
+};
+export default function draw_2D(
+  ctx,
+  rootPoint,
+  width,
+  height,
+  setTimeoutID,
+  setDegree,
+  degree
+) {
+  drawLake(
+    ctx,
+    rootPoint,
+    { x: 14, y: 20 },
+    92,
+    60,
+    [150, 150, 150],
+    [118, 211, 232]
+  );
+  drawHouse(ctx, rootPoint);
+  drawWindmill(ctx, rootPoint, width, height, setTimeoutID, setDegree, degree);
 }

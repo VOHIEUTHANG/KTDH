@@ -214,6 +214,15 @@ const drawRectangle = (
 ) => {
   const coorList = getRectangleCoorList(topUpperPoint, width, height);
   drawWidthObjectCoor(ctx, rootPoint, coorList, borderColor);
+  tintColor(
+    ctx,
+    rootPoint,
+    topUpperPoint.x + 2,
+    topUpperPoint.y - 3,
+    color,
+    borderColor
+  );
+  return coorList;
 };
 const drawTrapezoid = (
   ctx,
@@ -226,53 +235,38 @@ const drawTrapezoid = (
 ) => {
   const largeWidth = smallWidth + 2 * (topLeftPoint.x - bottomLeftPoint.x);
   // left line
-  drawWidthObjectCoor(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      bottomLeftPoint.x,
-      bottomLeftPoint.y,
-      topLeftPoint.x,
-      topLeftPoint.y
-    ),
-    borderColor
+  const leftLineCoorList = getCoorListWidthBresenham(
+    bottomLeftPoint.x,
+    bottomLeftPoint.y,
+    topLeftPoint.x,
+    topLeftPoint.y
   );
+  const topLineCoorList = getCoorListWidthBresenham(
+    topLeftPoint.x,
+    topLeftPoint.y,
+    topLeftPoint.x + smallWidth,
+    topLeftPoint.y
+  );
+  const rightLineCoorList = getCoorListWidthBresenham(
+    topLeftPoint.x + smallWidth,
+    topLeftPoint.y,
+    bottomLeftPoint.x + largeWidth,
+    bottomLeftPoint.y
+  );
+  const bottomLieCoorList = getCoorListWidthBresenham(
+    bottomLeftPoint.x + largeWidth,
+    bottomLeftPoint.y,
+    bottomLeftPoint.x,
+    bottomLeftPoint.y
+  );
+
+  drawWidthObjectCoor(ctx, rootPoint, leftLineCoorList, borderColor);
   // top line
-  drawWidthObjectCoor(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      topLeftPoint.x,
-      topLeftPoint.y,
-      topLeftPoint.x + smallWidth,
-      topLeftPoint.y
-    ),
-    borderColor
-  );
+  drawWidthObjectCoor(ctx, rootPoint, topLineCoorList, borderColor);
   // right line
-  drawWidthObjectCoor(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      topLeftPoint.x + smallWidth,
-      topLeftPoint.y,
-      bottomLeftPoint.x + largeWidth,
-      bottomLeftPoint.y
-    ),
-    borderColor
-  );
+  drawWidthObjectCoor(ctx, rootPoint, rightLineCoorList, borderColor);
   // bottom line
-  drawWidthObjectCoor(
-    ctx,
-    rootPoint,
-    getCoorListWidthBresenham(
-      bottomLeftPoint.x + largeWidth,
-      bottomLeftPoint.y,
-      bottomLeftPoint.x,
-      bottomLeftPoint.y
-    ),
-    borderColor
-  );
+  drawWidthObjectCoor(ctx, rootPoint, bottomLieCoorList, borderColor);
 
   tintColor(
     ctx,
@@ -282,6 +276,12 @@ const drawTrapezoid = (
     color,
     borderColor
   );
+  return [
+    ...leftLineCoorList,
+    ...topLineCoorList,
+    ...rightLineCoorList,
+    ...bottomLieCoorList,
+  ];
 };
 const drawTriangle = (
   ctx,
@@ -466,25 +466,6 @@ const drawFourPropeller = (
 
   drawCircle(ctx, rootPoint, 6, centerCircle);
 };
-const drawPillarBase = (
-  ctx,
-  rootPoint,
-  topUpperPoint,
-  width,
-  height,
-  borderColor,
-  color
-) => {
-  drawRectangle(ctx, rootPoint, topUpperPoint, width, height, borderColor);
-  tintColor(
-    ctx,
-    rootPoint,
-    topUpperPoint.x + 5,
-    topUpperPoint.y - 5,
-    color,
-    borderColor
-  );
-};
 const drawDoorOfWindmill = (
   ctx,
   rootPoint,
@@ -549,12 +530,40 @@ const drawDoorOfWindmill = (
     borderColor
   );
 };
+const drawLake = (
+  ctx,
+  rootPoint,
+  topUpperPoint,
+  width,
+  height,
+  borderColor,
+  color
+) => {
+  drawRectangle(
+    ctx,
+    rootPoint,
+    topUpperPoint,
+    width,
+    height,
+    borderColor,
+    color
+  );
 
+  tintColor(
+    ctx,
+    rootPoint,
+    topUpperPoint.x + 5,
+    topUpperPoint.y - 10,
+    color,
+    borderColor
+  );
+};
 export {
   drawRect,
+  drawRectangle,
   drawTrapezoid,
   drawTriangle,
   drawFourPropeller,
-  drawPillarBase,
   drawDoorOfWindmill,
+  drawLake,
 };
