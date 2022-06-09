@@ -1,12 +1,7 @@
 import {
-  ConnectingAirportsOutlined,
-  ConstructionOutlined,
-} from "@mui/icons-material";
-import {
   matrixMultiply,
   createRotateMatrix,
   createTranslationMatrix,
-  convertMatrixToArray,
 } from "./matrix_calculator";
 const drawLine = (ctx, x1, y1, x2, y2, color = "black") => {
   ctx.moveTo(x1, y1);
@@ -82,7 +77,6 @@ const getRotateCoorList = (initialCoorList, deg, translationPoint) => {
     return coorItem[0].map((coor) => Math.round(coor));
   });
 };
-
 const getRotateCoor = (coor, deg) => {
   const coorItem = matrixMultiply(
     [[coor.x, coor.y, 1]],
@@ -91,7 +85,6 @@ const getRotateCoor = (coor, deg) => {
   coorItem[0].pop();
   return coorItem[0].map((coor) => Math.round(coor));
 };
-
 // CC mean convert coordinate
 const CC_fromComputerToHuman = (rootPoint, x, y) => {
   return [Math.round((x - rootPoint.x) / 5), Math.floor((rootPoint.y - y) / 5)];
@@ -209,6 +202,18 @@ const getRectangleCoorList = (topUpperPoint, width, height) => {
     ...BottomLineCoorList,
     ...LeftLineCoorList,
   ];
+};
+const drawRectangle = (
+  ctx,
+  rootPoint,
+  topUpperPoint,
+  width,
+  height,
+  borderColor,
+  color
+) => {
+  const coorList = getRectangleCoorList(topUpperPoint, width, height);
+  drawWidthObjectCoor(ctx, rootPoint, coorList, borderColor);
 };
 const drawTrapezoid = (
   ctx,
@@ -461,17 +466,95 @@ const drawFourPropeller = (
 
   drawCircle(ctx, rootPoint, 6, centerCircle);
 };
+const drawPillarBase = (
+  ctx,
+  rootPoint,
+  topUpperPoint,
+  width,
+  height,
+  borderColor,
+  color
+) => {
+  drawRectangle(ctx, rootPoint, topUpperPoint, width, height, borderColor);
+  tintColor(
+    ctx,
+    rootPoint,
+    topUpperPoint.x + 5,
+    topUpperPoint.y - 5,
+    color,
+    borderColor
+  );
+};
+const drawDoorOfWindmill = (
+  ctx,
+  rootPoint,
+  bottomCenterPoint,
+  width,
+  height,
+  borderColor,
+  color
+) => {
+  const BottomLeftPoint = {
+    x: bottomCenterPoint.x - Math.round(width / 2),
+    y: bottomCenterPoint.y,
+  };
+  const BottomRightPoint = {
+    x: bottomCenterPoint.x + Math.round(width / 2),
+    y: bottomCenterPoint.y,
+  };
+  const topLeftPoint = {
+    x: bottomCenterPoint.x - Math.round(width / 2),
+    y: bottomCenterPoint.y + height,
+  };
+  const topRightPoint = {
+    x: bottomCenterPoint.x + Math.round(width / 2),
+    y: bottomCenterPoint.y + height,
+  };
+
+  const leftLineCoorList = getCoorListWidthBresenham(
+    BottomLeftPoint.x,
+    BottomLeftPoint.y,
+    topLeftPoint.x,
+    topLeftPoint.y
+  );
+  const rightLineCoorList = getCoorListWidthBresenham(
+    BottomRightPoint.x,
+    BottomRightPoint.y,
+    topRightPoint.x,
+    topRightPoint.y
+  );
+  drawWidthObjectCoor(ctx, rootPoint, leftLineCoorList, borderColor);
+  drawWidthObjectCoor(ctx, rootPoint, rightLineCoorList, borderColor);
+
+  const an8thCoordinate = getAn8thCoordinateListOfCircleWidthBresenham(
+    Math.round(width / 2)
+  );
+  const fullCircleCoorList = getFullCoordinateList(an8thCoordinate, {
+    x: bottomCenterPoint.x,
+    y: bottomCenterPoint.y + height,
+  });
+
+  const halfCircleCoorList = [];
+  fullCircleCoorList.forEach((coor) => {
+    coor.y >= bottomCenterPoint.y + height && halfCircleCoorList.push(coor);
+  });
+  drawWidthObjectCoor(ctx, rootPoint, halfCircleCoorList, borderColor);
+
+  tintColor(
+    ctx,
+    rootPoint,
+    bottomCenterPoint.x,
+    bottomCenterPoint.y + 5,
+    color,
+    borderColor
+  );
+};
+
 export {
-  drawLine,
-  putPixel,
   drawRect,
-  getCoorListWidthBresenham,
-  CC_fromComputerToHuman,
-  CC_fromHumanToComputer,
-  drawWidthObjectCoor as draw,
   drawTrapezoid,
   drawTriangle,
-  drawCircle,
-  getPropellerCoorList as drawPropeller,
   drawFourPropeller,
+  drawPillarBase,
+  drawDoorOfWindmill,
 };
