@@ -219,6 +219,8 @@ export default function draw_2D(
   const boundary_y = 40;
   drawSky(ctx, rootPoint, -120, 120, boundary_y, 80, [200, 228, 250, 0.8]);
   drawCloud(ctx, rootPoint, 18, 8, [255, 255, 251], { x: -90, y: 64 });
+  drawCloud(ctx, rootPoint, 14, 6, [255, 255, 251], { x: -20, y: 67 });
+  drawCloud(ctx, rootPoint, 12, 4, [255, 255, 251], { x: 90, y: 67 });
   drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
   drawFences(
     ctx,
