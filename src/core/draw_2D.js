@@ -90,17 +90,16 @@ const drawWindmill = (
     degree
   );
 
-  const TimeoutID = setTimeout(() => {
-    setTimeoutID(TimeoutID);
-    clearTimeout(TimeoutID);
-    setDegree((prevDeg) => {
-      console.log(prevDeg);
-      if (prevDeg >= 360) {
-        return 0;
-      }
-      return (prevDeg += 2);
-    });
-  }, 1);
+  // const TimeoutID = setTimeout(() => {
+  //   setTimeoutID(TimeoutID);
+  //   clearTimeout(TimeoutID);
+  //   setDegree((prevDeg) => {
+  //     if (prevDeg >= 360) {
+  //       return 0;
+  //     }
+  //     return (prevDeg += 2);
+  //   });
+  // }, 1);
 };
 const drawHouse = (ctx, rootPoint, symmetricalLine) => {
   const leftUpperPoint = { x: 40, y: 74 };
@@ -203,6 +202,9 @@ const drawFences = (ctx, rootPoint, maxX, y, width, height, ...rest) => {
     [...rest[1], [1]]
   );
 };
+const drawSky = (...props) => {
+  drawGrass(...props);
+};
 export default function draw_2D(
   ctx,
   rootPoint,
@@ -224,7 +226,7 @@ export default function draw_2D(
     [150, 150, 150],
     [176, 150, 58]
   );
-
+  drawSky(ctx, rootPoint, -120, 120, boundary_y, 80, [129, 228, 230, 0.3]);
   drawHouse(ctx, rootPoint, 20);
   drawLake(
     ctx,
