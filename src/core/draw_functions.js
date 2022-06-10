@@ -218,7 +218,7 @@ const drawRectangle = (
     ctx,
     rootPoint,
     topUpperPoint.x + 2,
-    topUpperPoint.y - 3,
+    topUpperPoint.y - 2,
     color,
     borderColor
   );
@@ -558,6 +558,89 @@ const drawLake = (
     borderColor
   );
 };
+const drawGrass = (ctx, rootPoint, minX, maxX, minY, maxY, color) => {
+  for (let i = minX; i <= maxX; i++) {
+    for (let j = minY; j <= maxY; j++) {
+      const [x, y] = CC_fromHumanToComputer(rootPoint, i, j);
+      putPixel(
+        ctx,
+        x,
+        y,
+        `rgba(${color[0]},${color[1]},${color[2]},${color[3]})`
+      );
+    }
+  }
+};
+const drawFence = (
+  ctx,
+  rootPoint,
+  leftBottomPoint,
+  width,
+  height,
+  borderColor = [100, 100, 100],
+  color
+) => {
+  const leftUpperPoint = {
+    x: leftBottomPoint.x,
+    y: leftBottomPoint.y + height,
+  };
+  const rightUpperPoint = {
+    x: leftBottomPoint.x + width,
+    y: leftBottomPoint.y + height,
+  };
+  const leftCoorList = getCoorListWidthBresenham(
+    leftBottomPoint.x,
+    leftBottomPoint.y,
+    leftUpperPoint.x,
+    leftUpperPoint.y
+  );
+  const bottomCoorList = getCoorListWidthBresenham(
+    leftBottomPoint.x,
+    leftBottomPoint.y,
+    leftBottomPoint.x + width,
+    leftBottomPoint.y
+  );
+  const rightCoorList = getCoorListWidthBresenham(
+    leftBottomPoint.x + width,
+    leftBottomPoint.y,
+    rightUpperPoint.x,
+    rightUpperPoint.y
+  );
+  const vertexPoint = {
+    x: leftUpperPoint.x + Math.round(width / 2),
+    y: leftUpperPoint.y + Math.round(height / 4),
+  };
+  const leftAdgeCoorList = getCoorListWidthBresenham(
+    leftUpperPoint.x,
+    leftUpperPoint.y,
+    vertexPoint.x,
+    vertexPoint.y
+  );
+  const rightAdgeCoorList = getCoorListWidthBresenham(
+    rightUpperPoint.x,
+    rightUpperPoint.y,
+    vertexPoint.x,
+    vertexPoint.y
+  );
+
+  const totalCoorList = [
+    ...leftAdgeCoorList,
+    ...rightAdgeCoorList,
+    ...leftCoorList,
+    ...rightCoorList,
+    ...bottomCoorList,
+  ];
+  drawWidthObjectCoor(ctx, rootPoint, totalCoorList, borderColor);
+  tintColor(
+    ctx,
+    rootPoint,
+    leftBottomPoint.x + 2,
+    leftBottomPoint.y + 2,
+    color,
+    borderColor
+  );
+};
+
 export {
   drawRect,
   drawRectangle,
@@ -567,4 +650,6 @@ export {
   drawDoorOfWindmill,
   drawLake,
   drawWidthObjectCoor,
+  drawGrass,
+  drawFence,
 };

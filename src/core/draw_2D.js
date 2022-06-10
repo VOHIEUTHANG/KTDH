@@ -6,6 +6,8 @@ import {
   drawDoorOfWindmill,
   drawLake,
   drawWidthObjectCoor,
+  drawGrass,
+  drawFence,
 } from "./draw_functions";
 
 const drawWindmill = (
@@ -88,17 +90,17 @@ const drawWindmill = (
     degree
   );
 
-  // const TimeoutID = setTimeout(() => {
-  //   setTimeoutID(TimeoutID);
-  //   clearTimeout(TimeoutID);
-  //   setDegree((prevDeg) => {
-  //     console.log(prevDeg);
-  //     if (prevDeg >= 360) {
-  //       return 0;
-  //     }
-  //     return (prevDeg += 2);
-  //   });
-  // }, 1);
+  const TimeoutID = setTimeout(() => {
+    setTimeoutID(TimeoutID);
+    clearTimeout(TimeoutID);
+    setDegree((prevDeg) => {
+      console.log(prevDeg);
+      if (prevDeg >= 360) {
+        return 0;
+      }
+      return (prevDeg += 2);
+    });
+  }, 1);
 };
 const drawHouse = (ctx, rootPoint, symmetricalLine) => {
   const leftUpperPoint = { x: 40, y: 74 };
@@ -187,6 +189,20 @@ const drawHouse = (ctx, rootPoint, symmetricalLine) => {
 
   drawWidthObjectCoor(ctx, rootPoint, houseShadowCoorList, [0, 0, 0]);
 };
+const drawFences = (ctx, rootPoint, maxX, y, width, height, ...rest) => {
+  for (let i = -maxX + 4; i <= maxX - 4; i += 14) {
+    drawFence(ctx, rootPoint, { x: i, y }, width, height, ...rest);
+  }
+  drawGrass(
+    ctx,
+    rootPoint,
+    -maxX,
+    maxX,
+    y + Math.round(height / 2) - 2,
+    y + Math.round(height / 2) + 2,
+    [...rest[1], [1]]
+  );
+};
 export default function draw_2D(
   ctx,
   rootPoint,
@@ -196,6 +212,19 @@ export default function draw_2D(
   setDegree,
   degree
 ) {
+  const boundary_y = 40;
+  drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
+  drawFences(
+    ctx,
+    rootPoint,
+    Math.round(width / 10),
+    boundary_y,
+    4,
+    16,
+    [150, 150, 150],
+    [176, 150, 58]
+  );
+
   drawHouse(ctx, rootPoint, 20);
   drawLake(
     ctx,

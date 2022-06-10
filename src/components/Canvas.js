@@ -14,8 +14,8 @@ function Canvas({ isShowCoordinate }) {
     draw_2D(
       ctx,
       rootPoint,
-      FRAME_HEIGHT,
       FRAME_WIDTH,
+      FRAME_HEIGHT,
       setTimeoutID,
       setDegree,
       degree
