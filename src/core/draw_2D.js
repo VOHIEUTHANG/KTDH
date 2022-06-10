@@ -1,6 +1,7 @@
 import {
   drawTrapezoid,
   drawRectangle,
+  drawCloud,
   drawTriangle,
   drawFourPropeller,
   drawDoorOfWindmill,
@@ -205,6 +206,7 @@ const drawFences = (ctx, rootPoint, maxX, y, width, height, ...rest) => {
 const drawSky = (...props) => {
   drawGrass(...props);
 };
+
 export default function draw_2D(
   ctx,
   rootPoint,
@@ -215,6 +217,8 @@ export default function draw_2D(
   degree
 ) {
   const boundary_y = 40;
+  drawSky(ctx, rootPoint, -120, 120, boundary_y, 80, [200, 228, 250, 0.8]);
+  drawCloud(ctx, rootPoint, 18, 8, [255, 255, 251], { x: -90, y: 64 });
   drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
   drawFences(
     ctx,
@@ -226,7 +230,7 @@ export default function draw_2D(
     [150, 150, 150],
     [176, 150, 58]
   );
-  drawSky(ctx, rootPoint, -120, 120, boundary_y, 80, [129, 228, 230, 0.3]);
+
   drawHouse(ctx, rootPoint, 20);
   drawLake(
     ctx,

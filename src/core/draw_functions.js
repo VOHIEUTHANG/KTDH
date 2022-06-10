@@ -85,6 +85,32 @@ const getRotateCoor = (coor, deg) => {
   coorItem[0].pop();
   return coorItem[0].map((coor) => Math.round(coor));
 };
+const getElipseCoorList = (ctx, rootPoint, a, b) => {
+  const coorList = getAn4thCoordinateListOfElipWidthBresenham(a, b);
+  const fullCoorList = [...coorList];
+  coorList.forEach((coor) => {
+    fullCoorList.push({ ...coor, y: -coor.y });
+    fullCoorList.push({ ...coor, x: -coor.x });
+    fullCoorList.push({ x: -coor.x, y: -coor.y });
+  });
+  return fullCoorList;
+};
+const gethalfCircleCoorList = (r) => {
+  const an8thCoordinate = getAn8thCoordinateListOfCircleWidthBresenham(r);
+  const coorList = [...an8thCoordinate];
+  for (let i = an8thCoordinate.length - 1; i >= 0; i--) {
+    const item = an8thCoordinate[i];
+    if (item.x !== item.y) {
+      coorList.push({ x: item.y, y: item.x });
+    }
+  }
+  const fullCoorList = [...coorList];
+  coorList.forEach((coor) => {
+    fullCoorList.push({ ...coor, x: -coor.x });
+  });
+
+  return fullCoorList;
+};
 // CC mean convert coordinate
 const CC_fromComputerToHuman = (rootPoint, x, y) => {
   return [Math.round((x - rootPoint.x) / 5), Math.floor((rootPoint.y - y) / 5)];
@@ -114,6 +140,40 @@ const drawWidthArrayCoor = (
     putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
   });
 };
+const getAn4thCoordinateListOfElipWidthBresenham = (a, b) => {
+  const coorList = [];
+  const a2 = a ** 2;
+  const b2 = b ** 2;
+  let x = 0;
+  let y = b;
+  let p = 2 * (b2 / a2) - 2 * b + 1;
+  while ((b2 / a2) * x <= y) {
+    coorList.push({ x, y });
+    if (p < 0) {
+      p = p + 2 * (b2 / a2) * (2 * x + 3);
+    } else {
+      p = p - 4 * y + 2 * (b2 / a2) * (2 * x + 3);
+      y--;
+    }
+    x++;
+  }
+  const coorListTemp = [];
+  y = 0;
+  x = a;
+  p = 2 * (a2 / b2) - 2 * a + 1;
+  while ((a2 / b2) * y <= x) {
+    coorListTemp.push({ x, y });
+    if (p < 0) {
+      p = p + 2 * (a2 / b2) * (2 * y + 3);
+    } else {
+      p = p - 4 * x + 2 * (a2 / b2) * (2 * y + 3);
+      x = x - 1;
+    }
+    y = y + 1;
+  }
+
+  return coorList.concat(coorListTemp.reverse());
+};
 const getAn8thCoordinateListOfCircleWidthBresenham = (r) => {
   const coorList = [];
   let x = 0;
@@ -134,14 +194,15 @@ const getAn8thCoordinateListOfCircleWidthBresenham = (r) => {
 };
 const getFullCoordinateList = (an8thCoordinate, centerPoint) => {
   const coorList = [...an8thCoordinate];
-  const lastCoor = an8thCoordinate[an8thCoordinate.length - 1];
   const firstCoor = an8thCoordinate.shift();
+
   for (let i = an8thCoordinate.length - 1; i >= 0; i--) {
     const item = an8thCoordinate[i];
     if (item.x !== item.y) {
       coorList.push({ x: item.y, y: item.x });
     }
   }
+
   coorList.push({ x: firstCoor.y, y: firstCoor.x });
 
   for (let i = coorList.length - 2; i >= 0; i--) {
@@ -151,6 +212,7 @@ const getFullCoordinateList = (an8thCoordinate, centerPoint) => {
   for (let i = coorList.length - 2; i > 0; i--) {
     coorList.push({ x: -coorList[i].x, y: coorList[i].y });
   }
+
   return coorList.map((coor) => {
     return { x: coor.x + centerPoint.x, y: coor.y + centerPoint.y };
   });
@@ -640,16 +702,76 @@ const drawFence = (
     borderColor
   );
 };
+const drawCloud = (
+  ctx,
+  rootPoint,
+  a,
+  b,
+  color = [255, 255, 250],
+  newCoorPoint
+) => {
+  const r = b + 4;
+  let elipseCoorList = getElipseCoorList(ctx, rootPoint, a, b);
+
+  const halfCircleCoorList = gethalfCircleCoorList(r);
+  const lineCoorList = getCoorListWidthBresenham(-r, 0, r, 0);
+
+  let circleCoorList = [...halfCircleCoorList, ...lineCoorList];
+  const matrixTranslation = createTranslationMatrix(
+    newCoorPoint.x,
+    newCoorPoint.y
+  );
+
+  const pointInCircle = matrixMultiply([[0, 2, 1]], matrixTranslation)[0];
+  const pointInElipse = matrixMultiply([[0, -2, 1]], matrixTranslation)[0];
+
+  circleCoorList = circleCoorList.map((coor) => {
+    const coorItem = matrixMultiply([[coor.x, coor.y, 1]], matrixTranslation);
+    coorItem[0].pop();
+    return coorItem[0];
+  });
+
+  elipseCoorList = elipseCoorList.map((coor) => {
+    const coorItem = matrixMultiply([[coor.x, coor.y, 1]], matrixTranslation);
+    coorItem[0].pop();
+    return coorItem[0];
+  });
+
+  drawWidthArrayCoor(ctx, rootPoint, circleCoorList, [
+    color[0],
+    color[1],
+    color[2] + 2,
+  ]);
+  tintColor(ctx, rootPoint, pointInCircle[0], pointInCircle[1], color, [
+    color[0],
+    color[1],
+    color[2] + 2,
+  ]);
+  drawWidthArrayCoor(ctx, rootPoint, elipseCoorList, [
+    color[0],
+    color[1],
+    color[2] + 3,
+  ]);
+  tintColor(ctx, rootPoint, pointInElipse[0], pointInElipse[1], color, [
+    color[0],
+    color[1],
+    color[2] + 3,
+  ]);
+};
 
 export {
   drawRect,
   drawRectangle,
   drawTrapezoid,
   drawTriangle,
+  drawCircle,
   drawFourPropeller,
   drawDoorOfWindmill,
   drawLake,
   drawWidthObjectCoor,
   drawGrass,
   drawFence,
+  gethalfCircleCoorList,
+  getCoorListWidthBresenham,
+  drawCloud,
 };
