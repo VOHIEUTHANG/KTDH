@@ -760,6 +760,7 @@ export {
   drawRectangle,
   putPixel,
   drawTrapezoid,
+  drawLine,
   drawTriangle,
   drawCircle,
   drawFourPropeller,

@@ -1,4 +1,3 @@
-import { ElevatorSharp } from "@mui/icons-material";
 import {
   drawTrapezoid,
   drawRectangle,

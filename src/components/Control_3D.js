@@ -1,14 +1,38 @@
-import CropSquareIcon from "@mui/icons-material/CropSquare";
 import RectangleIcon from "@mui/icons-material/Rectangle";
+import { useState } from "react";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { Button } from "@mui/material/";
+import Cylinder from "./Cylinder";
+import Reactangular from "./Rectangular";
 
 export default function Control_3D({ setDraw2D }) {
+  const [typeDraw, setTypeDraw] = useState(1);
+  const handleChange = (e) => {
+    setTypeDraw(Number(e.target.value));
+  };
+
   return (
     <div className="ml-6 w-[400px] h-[800px] bg-white rounded-xl overflow-hidden p-10 flex flex-col justify-between">
       <p className="uppercase text-center text-xl font-semibold text-gray-500 mb-4">
         bảng điều khiển
       </p>
-
+      <FormControl fullWidth className="mt-2">
+        <InputLabel id="demo-simple-select-label">Hình</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={typeDraw}
+          label="Hình"
+          onChange={handleChange}
+        >
+          <MenuItem value={1}>Hình hộp chữ nhật</MenuItem>
+          <MenuItem value={2}>Hình trụ</MenuItem>
+        </Select>
+      </FormControl>
+      {typeDraw == 1 ? <Reactangular /> : <Cylinder />}
       <Button
         variant="container"
         size="large"

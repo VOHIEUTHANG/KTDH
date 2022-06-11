@@ -2,7 +2,7 @@ import { clear } from "@testing-library/user-event/dist/clear";
 import { useRef, useEffect, useState } from "react";
 import draw_2D from "../core/draw_2D";
 import draw_3D from "../core/draw_3D";
-import drawCoordinate from "../core/draw_coordinate";
+import drawCoordinate from "../core/draw_2D_coordinate";
 
 function Canvas({ isShowCoordinate, draw2D, setWindmill, setHouse, setCloud }) {
   const [timeoutID, setTimeoutID] = useState(-1);
@@ -37,7 +37,7 @@ function Canvas({ isShowCoordinate, draw2D, setWindmill, setHouse, setCloud }) {
         setCloud
       );
     if (!draw2D) {
-      draw_3D();
+      draw_3D(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT);
     }
     return () => {
       ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);

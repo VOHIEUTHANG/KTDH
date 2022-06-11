@@ -1,6 +1,6 @@
 import { drawRect } from "./draw_functions";
 
-function drawCoordinate(canvas) {
+function draw2DCoordinate(canvas) {
   const ctx = canvas.getContext("2d");
 
   const FRAME_WIDTH = canvas.offsetWidth;
@@ -38,4 +38,4 @@ function drawCoordinate(canvas) {
     ctx,
   };
 }
-export default drawCoordinate;
+export default draw2DCoordinate;
