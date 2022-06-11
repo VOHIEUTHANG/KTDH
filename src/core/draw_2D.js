@@ -1,3 +1,4 @@
+import { ElevatorSharp } from "@mui/icons-material";
 import {
   drawTrapezoid,
   drawRectangle,
@@ -18,7 +19,10 @@ const drawWindmill = (
   height,
   setTimeoutID,
   setDegree,
-  degree
+  degree,
+  setLocationCloud1,
+  setLocationCloud2,
+  setLocationCloud3
 ) => {
   const leftUpperPoint = { x: -70, y: 6 };
   const leftBottomPoint = { x: -76, y: -70 };
@@ -91,6 +95,24 @@ const drawWindmill = (
     degree
   );
 
+  let cloud1Value = localStorage.getItem("cloud1") ?? 1;
+  let cloud2Value = localStorage.getItem("cloud2") ?? 1;
+  let cloud3Value = localStorage.getItem("cloud3") ?? 1;
+
+  const maxValue = 100;
+  const minValue = -100;
+
+  const setLocationCloud = (prev, cloudValue, type) => {
+    if (prev > maxValue || prev < minValue) {
+      type == 1 && localStorage.setItem("cloud1", Number(cloudValue) * -1);
+      type == 2 && localStorage.setItem("cloud2", Number(cloudValue) * -1);
+      type == 3 && localStorage.setItem("cloud3", Number(cloudValue) * -1);
+      cloudValue = Number(cloudValue) * -1;
+    }
+    console.log("================");
+    return prev + Number(cloudValue);
+  };
+
   // const TimeoutID = setTimeout(() => {
   //   setTimeoutID(TimeoutID);
   //   clearTimeout(TimeoutID);
@@ -98,8 +120,12 @@ const drawWindmill = (
   //     if (prevDeg >= 360) {
   //       return 0;
   //     }
-  //     return (prevDeg += 2);
+  //     return (prevDeg += 4);
   //   });
+
+  //   setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
+  //   setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
+  //   setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
   // }, 1);
 };
 const drawHouse = (ctx, rootPoint, symmetricalLine) => {
@@ -214,13 +240,30 @@ export default function draw_2D(
   height,
   setTimeoutID,
   setDegree,
-  degree
+  degree,
+  setLocationCloud1,
+  setLocationCloud2,
+  setLocationCloud3,
+  locationCloud1,
+  locationCloud2,
+  locationCloud3
 ) {
   const boundary_y = 40;
   drawSky(ctx, rootPoint, -120, 120, boundary_y, 80, [200, 228, 250, 0.8]);
-  drawCloud(ctx, rootPoint, 18, 8, [255, 255, 251], { x: -90, y: 64 });
-  drawCloud(ctx, rootPoint, 14, 6, [255, 255, 251], { x: -20, y: 67 });
-  drawCloud(ctx, rootPoint, 12, 4, [255, 255, 251], { x: 90, y: 67 });
+
+  drawCloud(ctx, rootPoint, 18, 8, [255, 255, 251], {
+    x: locationCloud1,
+    y: 60,
+  });
+  drawCloud(ctx, rootPoint, 14, 6, [255, 255, 251], {
+    x: locationCloud2,
+    y: 67,
+  });
+  drawCloud(ctx, rootPoint, 12, 4, [255, 255, 251], {
+    x: locationCloud3,
+    y: 70,
+  });
+
   drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
   drawFences(
     ctx,
@@ -243,5 +286,16 @@ export default function draw_2D(
     [150, 150, 150],
     [118, 211, 232]
   );
-  drawWindmill(ctx, rootPoint, width, height, setTimeoutID, setDegree, degree);
+  drawWindmill(
+    ctx,
+    rootPoint,
+    width,
+    height,
+    setTimeoutID,
+    setDegree,
+    degree,
+    setLocationCloud1,
+    setLocationCloud2,
+    setLocationCloud3
+  );
 }

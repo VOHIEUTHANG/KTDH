@@ -6,6 +6,11 @@ import drawCoordinate from "../core/draw_coordinate";
 function Canvas({ isShowCoordinate }) {
   const [timeoutID, setTimeoutID] = useState(-1);
   const [degree, setDegree] = useState(0);
+
+  const [locationCloud1, setLocationCloud1] = useState(-90);
+  const [locationCloud2, setLocationCloud2] = useState(-20);
+  const [locationCloud3, setLocationCloud3] = useState(90);
+
   const canvasRef = useRef();
   useEffect(() => {
     const { drawCoordinateSystem, rootPoint, FRAME_HEIGHT, FRAME_WIDTH, ctx } =
@@ -18,7 +23,13 @@ function Canvas({ isShowCoordinate }) {
       FRAME_HEIGHT,
       setTimeoutID,
       setDegree,
-      degree
+      degree,
+      setLocationCloud1,
+      setLocationCloud2,
+      setLocationCloud3,
+      locationCloud1,
+      locationCloud2,
+      locationCloud3
     );
     return () => {
       ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
