@@ -10,6 +10,8 @@ import {
   drawWidthObjectCoor,
   drawGrass,
   drawFence,
+  putPixel,
+  CC_fromHumanToComputer,
 } from "./draw_functions";
 
 const drawWindmill = (
@@ -22,7 +24,9 @@ const drawWindmill = (
   degree,
   setLocationCloud1,
   setLocationCloud2,
-  setLocationCloud3
+  setLocationCloud3,
+  setWindmill,
+  setCloud
 ) => {
   const leftUpperPoint = { x: -70, y: 6 };
   const leftBottomPoint = { x: -76, y: -70 };
@@ -83,7 +87,7 @@ const drawWindmill = (
     [250, 250, 0]
   );
 
-  drawFourPropeller(
+  const topUpperPointOfPropeller = drawFourPropeller(
     ctx,
     rootPoint,
     centerCircle,
@@ -94,6 +98,23 @@ const drawWindmill = (
     [230, 250, 200],
     degree
   );
+
+  const [x1, y1] = CC_fromHumanToComputer(
+    rootPoint,
+    centerCircle.x,
+    centerCircle.y
+  );
+
+  const [x2, y2] = CC_fromHumanToComputer(
+    rootPoint,
+    topUpperPointOfPropeller[0],
+    topUpperPointOfPropeller[1]
+  );
+
+  putPixel(ctx, x1, y1, "red", 4);
+  putPixel(ctx, x2, y2, "red", 4);
+
+  // Cloud handler
 
   let cloud1Value = localStorage.getItem("cloud1") ?? 1;
   let cloud2Value = localStorage.getItem("cloud2") ?? 1;
@@ -109,26 +130,36 @@ const drawWindmill = (
       type == 3 && localStorage.setItem("cloud3", Number(cloudValue) * -1);
       cloudValue = Number(cloudValue) * -1;
     }
-    console.log("================");
     return prev + Number(cloudValue);
   };
 
-  // const TimeoutID = setTimeout(() => {
-  //   setTimeoutID(TimeoutID);
-  //   clearTimeout(TimeoutID);
-  //   setDegree((prevDeg) => {
-  //     if (prevDeg >= 360) {
-  //       return 0;
-  //     }
-  //     return (prevDeg += 4);
-  //   });
+  // ANIMATION ===============>
 
-  //   setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
-  //   setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
-  //   setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
-  // }, 1);
+  const TimeoutID = setTimeout(() => {
+    setTimeoutID(TimeoutID);
+    clearTimeout(TimeoutID);
+    setDegree((prevDeg) => {
+      if (prevDeg >= 360) {
+        return 0;
+      }
+      return (prevDeg += 4);
+    });
+
+    setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
+    setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
+    setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
+    setWindmill((prev) => {
+      return {
+        ...prev,
+        x1: centerCircle.x,
+        y1: centerCircle.y,
+        x2: topUpperPointOfPropeller[0],
+        y2: topUpperPointOfPropeller[1],
+      };
+    });
+  }, 1);
 };
-const drawHouse = (ctx, rootPoint, symmetricalLine) => {
+const drawHouse = (ctx, rootPoint, symmetricalLine, setHouse) => {
   const leftUpperPoint = { x: 40, y: 74 };
   const leftBottomPoint = { x: 30, y: 50 };
   const roofWidth = 40;
@@ -139,6 +170,17 @@ const drawHouse = (ctx, rootPoint, symmetricalLine) => {
     x: 40 + Math.round(roofWidth / 2),
     y: 50 - houseHeight,
   };
+
+  setHouse((prev) => {
+    return {
+      ...prev,
+      x1: leftBottomPoint.x,
+      y1: leftBottomPoint.y,
+      x2: bottomCenterPoint.x,
+      y2: bottomCenterPoint.y,
+    };
+  });
+
   // draw roof
   const roofCoorList = drawTrapezoid(
     ctx,
@@ -208,6 +250,29 @@ const drawHouse = (ctx, rootPoint, symmetricalLine) => {
     ...pillarRightCoorList,
   ];
 
+  setHouse((prev) => {
+    return {
+      ...prev,
+      x1: leftBottomPoint.x,
+      y1: leftBottomPoint.y,
+      x2: bottomCenterPoint.x,
+      y2: bottomCenterPoint.y,
+    };
+  });
+
+  const [x1, y1] = CC_fromHumanToComputer(
+    rootPoint,
+    leftBottomPoint.x,
+    leftBottomPoint.y
+  );
+  putPixel(ctx, x1, y1, "red", 4);
+  const [x2, y2] = CC_fromHumanToComputer(
+    rootPoint,
+    bottomCenterPoint.x,
+    bottomCenterPoint.y
+  );
+  putPixel(ctx, x2, y2, "red", 4);
+
   const houseShadowCoorList = houseCoorList.map((coor) => ({
     ...coor,
     y: 2 * symmetricalLine - coor.y,
@@ -246,10 +311,18 @@ export default function draw_2D(
   setLocationCloud3,
   locationCloud1,
   locationCloud2,
-  locationCloud3
+  locationCloud3,
+  setWindmill,
+  setHouse,
+  setCloud
 ) {
   const boundary_y = 40;
   drawSky(ctx, rootPoint, -120, 120, boundary_y, 80, [200, 228, 250, 0.8]);
+
+  drawCloud(ctx, rootPoint, 12, 4, [255, 255, 251], {
+    x: locationCloud3,
+    y: 70,
+  });
 
   drawCloud(ctx, rootPoint, 18, 8, [255, 255, 251], {
     x: locationCloud1,
@@ -259,10 +332,14 @@ export default function draw_2D(
     x: locationCloud2,
     y: 67,
   });
-  drawCloud(ctx, rootPoint, 12, 4, [255, 255, 251], {
-    x: locationCloud3,
-    y: 70,
+
+  setCloud((prev) => {
+    return { ...prev, x1: locationCloud1, y1: 60, x2: locationCloud2, y2: 67 };
   });
+  const [x1, y1] = CC_fromHumanToComputer(rootPoint, locationCloud1, 60);
+  putPixel(ctx, x1, y1, "red", 4);
+  const [x2, y2] = CC_fromHumanToComputer(rootPoint, locationCloud2, 67);
+  putPixel(ctx, x2, y2, "red", 4);
 
   drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
   drawFences(
@@ -276,7 +353,7 @@ export default function draw_2D(
     [176, 150, 58]
   );
 
-  drawHouse(ctx, rootPoint, 20);
+  drawHouse(ctx, rootPoint, 20, setHouse);
   drawLake(
     ctx,
     rootPoint,
@@ -296,6 +373,8 @@ export default function draw_2D(
     degree,
     setLocationCloud1,
     setLocationCloud2,
-    setLocationCloud3
+    setLocationCloud3,
+    setWindmill,
+    setCloud
   );
 }

@@ -259,8 +259,8 @@ const getRectangleCoorList = (topUpperPoint, width, height) => {
     topUpperPoint.y
   );
   return [
-    ...TopLineCoorList,
     ...RightLineCoorList,
+    ...TopLineCoorList,
     ...BottomLineCoorList,
     ...LeftLineCoorList,
   ];
@@ -386,12 +386,6 @@ const drawCircle = (
   const coorList = getFullCoordinateList(an8thCoordinate, centerPoint);
   drawWidthObjectCoor(ctx, rootPoint, coorList);
   tintColor(ctx, rootPoint, centerPoint.x, centerPoint.y, color, borderColor);
-  const [x, y] = CC_fromHumanToComputer(
-    rootPoint,
-    centerPoint.x,
-    centerPoint.y
-  );
-  putPixel(ctx, x, y, "green", 3);
 };
 const getPropellerCoorList = (
   centerCircle,
@@ -420,7 +414,7 @@ const getPropellerCoorList = (
     heightPropeller
   );
 
-  return [...coorListMid, ...coorListTop, ...coorListRec];
+  return [...coorListRec, ...coorListMid, ...coorListTop];
 };
 const drawFourPropeller = (
   ctx,
@@ -527,6 +521,8 @@ const drawFourPropeller = (
   );
 
   drawCircle(ctx, rootPoint, 6, centerCircle);
+
+  return rightCoorList[0];
 };
 const drawDoorOfWindmill = (
   ctx,
@@ -762,6 +758,7 @@ const drawCloud = (
 export {
   drawRect,
   drawRectangle,
+  putPixel,
   drawTrapezoid,
   drawTriangle,
   drawCircle,
@@ -774,4 +771,5 @@ export {
   gethalfCircleCoorList,
   getCoorListWidthBresenham,
   drawCloud,
+  CC_fromHumanToComputer,
 };

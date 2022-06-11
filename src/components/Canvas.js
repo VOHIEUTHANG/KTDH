@@ -1,9 +1,10 @@
 import { clear } from "@testing-library/user-event/dist/clear";
 import { useRef, useEffect, useState } from "react";
 import draw_2D from "../core/draw_2D";
+import draw_3D from "../core/draw_3D";
 import drawCoordinate from "../core/draw_coordinate";
 
-function Canvas({ isShowCoordinate }) {
+function Canvas({ isShowCoordinate, draw2D, setWindmill, setHouse, setCloud }) {
   const [timeoutID, setTimeoutID] = useState(-1);
   const [degree, setDegree] = useState(0);
 
@@ -16,26 +17,34 @@ function Canvas({ isShowCoordinate }) {
     const { drawCoordinateSystem, rootPoint, FRAME_HEIGHT, FRAME_WIDTH, ctx } =
       drawCoordinate(canvasRef.current);
     drawCoordinateSystem(isShowCoordinate);
-    draw_2D(
-      ctx,
-      rootPoint,
-      FRAME_WIDTH,
-      FRAME_HEIGHT,
-      setTimeoutID,
-      setDegree,
-      degree,
-      setLocationCloud1,
-      setLocationCloud2,
-      setLocationCloud3,
-      locationCloud1,
-      locationCloud2,
-      locationCloud3
-    );
+    draw2D &&
+      draw_2D(
+        ctx,
+        rootPoint,
+        FRAME_WIDTH,
+        FRAME_HEIGHT,
+        setTimeoutID,
+        setDegree,
+        degree,
+        setLocationCloud1,
+        setLocationCloud2,
+        setLocationCloud3,
+        locationCloud1,
+        locationCloud2,
+        locationCloud3,
+        setWindmill,
+        setHouse,
+        setCloud
+      );
+    if (!draw2D) {
+      draw_3D();
+    }
     return () => {
       ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
       clearTimeout(timeoutID);
     };
-  }, [isShowCoordinate, degree]);
+  }, [isShowCoordinate, degree, draw2D]);
+
   return (
     <canvas
       id="canvas"
