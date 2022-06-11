@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 export default function Rectangular() {
   return (
     <div>
@@ -25,6 +25,13 @@ export default function Rectangular() {
         variant="outlined"
         className="w-full my-3"
       />
+      <Button
+        variant="container"
+        size="large"
+        className="w-full  py-4 mt-4 text-lg bg-blue-400 hover:bg-blue-500 font-bold  text-white"
+      >
+        Vẽ
+      </Button>
     </div>
   );
 }
