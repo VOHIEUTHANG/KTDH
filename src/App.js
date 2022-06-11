@@ -21,6 +21,7 @@ function App() {
       <Controls
         ShowCoordinate={{ setShowCoordinate, showCoordinate }}
         setDraw2D={setDraw2D}
+        draw2D={draw2D}
         windmill={windmill}
         house={house}
         cloud={cloud}
