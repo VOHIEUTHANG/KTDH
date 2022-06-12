@@ -6,6 +6,7 @@ import {
   convertCoordinateFrom3DTo2D,
   matrixMultiply,
   CC_fromHumanToComputer,
+  CC_fromComputerToHuman,
 } from "./draw_functions";
 
 import draw3DCoordiante from "./draw_3D_coordinate";
@@ -58,25 +59,8 @@ const drawCylinder = (ctx, rootPoint, { radius, high }) => {
   radius = Math.round(radius);
   high = Math.round(high);
 
-  let a1 = [radius * 2 - 40, 0, radius];
-  let a2 = [-40, 0, radius];
-  let a3 = [radius * 2 - 40, high, radius];
-  let a4 = [-40, high, radius];
-
   let r1 = [radius - 40, 0, radius];
   let r2 = [radius - 40, high, radius];
-
-  a1 = convert2DTo3DWidthCabinet(a1[0], a1[1], a1[2]);
-  a2 = convert2DTo3DWidthCabinet(a2[0], a2[1], a2[2]);
-  a3 = convert2DTo3DWidthCabinet(a3[0], a3[1], a3[2]);
-  a4 = convert2DTo3DWidthCabinet(a4[0], a4[1], a4[2]);
-
-  const [x1, y1] = a1;
-  const [x2, y2] = a2;
-  const [x3, y3] = a3;
-  const [x4, y4] = a4;
-
-  // drawLineUsingBreseham(ctx, rootPoint, x1, y1, x3, y3, [0, 120, 0]);
 
   const circleCoorList = getFullCoorListOfCircle(radius, {
     x: radius - 40,
@@ -96,27 +80,77 @@ const drawCylinder = (ctx, rootPoint, { radius, high }) => {
     return convertCoordinateFrom3DTo2D(rootPoint, coor[0], coor[1], coor[2]);
   });
 
+  let maxX = 0;
+  let minX = 1200;
+  const a1 = { x: 0, y: 0 };
+  const a2 = { x: 0, y: 0 };
+
   bottomCircle2DCoorLit.forEach((coor) => {
+    if (coor[0] > maxX) {
+      maxX = coor[0];
+      a1.x = coor[0];
+      a1.y = coor[1];
+    }
+    if (coor[0] < minX) {
+      minX = coor[0];
+      a2.x = coor[0];
+      a2.y = coor[1];
+    }
     putPixel(ctx, coor[0], coor[1], "green", 4);
   });
+
+  maxX = 0;
+  minX = 1200;
+  const a3 = { x: 0, y: 0 };
+  const a4 = { x: 0, y: 0 };
+
   topCircle2DCoorLit.forEach((coor) => {
+    if (coor[0] > maxX) {
+      maxX = coor[0];
+      a3.x = coor[0];
+      a3.y = coor[1];
+    }
+    if (coor[0] < minX) {
+      minX = coor[0];
+      a4.x = coor[0];
+      a4.y = coor[1];
+    }
     putPixel(ctx, coor[0], coor[1], "green", 4);
   });
+
+  const [x1, y1] = CC_fromComputerToHuman(rootPoint, a1.x, a1.y);
+  const [x2, y2] = CC_fromComputerToHuman(rootPoint, a2.x, a2.y);
+  const [x3, y3] = CC_fromComputerToHuman(rootPoint, a3.x, a3.y);
+  const [x4, y4] = CC_fromComputerToHuman(rootPoint, a4.x, a4.y);
+
+  drawLineUsingBreseham(ctx, rootPoint, x1, y1, x3, y3, [0, 120, 0]);
+  drawLineUsingBreseham(ctx, rootPoint, x2, y2, x4, y4, [0, 120, 0]);
 };
+
 export default function draw_3D(
   ctx,
   rootPoint,
   FRAME_WIDTH,
   FRAME_HEIGHT,
   typeDraw,
-  dimension
+  rectangular,
+  cylinder
 ) {
   draw3DCoordiante(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT);
+  console.log(typeDraw);
   if (typeDraw == 1) {
-    if (dimension.long != 0 && dimension.wide != 0 && dimension.high != 0) {
-      drawRectangular(ctx, rootPoint, dimension);
+    if (
+      rectangular.long != 0 &&
+      rectangular.wide != 0 &&
+      rectangular.high != 0
+    ) {
+      drawRectangular(ctx, rootPoint, rectangular);
+    }
+  } else if (typeDraw == 2) {
+    if (cylinder.radius != 0 && cylinder.high != 0) {
+      drawCylinder(ctx, rootPoint, cylinder);
     }
   } else {
-    drawCylinder(ctx, rootPoint, dimension);
+    console.log("invalid type draw");
   }
 }

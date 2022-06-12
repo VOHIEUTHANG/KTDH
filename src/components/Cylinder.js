@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 
-export default function Cylinder({ setDimension }) {
+export default function Cylinder({ setCylinder }) {
   const [radius, setRadius] = useState(0);
   const [high, setHigh] = useState(0);
   return (
@@ -36,7 +36,7 @@ export default function Cylinder({ setDimension }) {
         size="large"
         className="w-full  py-4 mt-4 text-lg bg-blue-400 hover:bg-blue-500 font-bold  text-white"
         onClick={() => {
-          setDimension({ radius, high });
+          setCylinder({ radius, high });
         }}
       >
         Vẽ

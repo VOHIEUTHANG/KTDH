@@ -10,7 +10,8 @@ export default function Control_3D({
   setDraw2D,
   setTypeDraw,
   typeDraw,
-  setDimension,
+  setCylinder,
+  setRectangular,
 }) {
   const handleChange = (e) => {
     setTypeDraw(Number(e.target.value));
@@ -35,9 +36,9 @@ export default function Control_3D({
         </Select>
       </FormControl>
       {typeDraw == 1 ? (
-        <Reactangular setDimension={setDimension} />
+        <Reactangular setRectangular={setRectangular} />
       ) : (
-        <Cylinder setDimension={setDimension} />
+        <Cylinder setCylinder={setCylinder} />
       )}
       <Button
         variant="container"

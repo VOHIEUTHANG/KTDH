@@ -6,7 +6,8 @@ import Controls from "./components/Controls";
 function App() {
   const [showCoordinate, setShowCoordinate] = useState(3);
   const [draw2D, setDraw2D] = useState(true);
-  const [dimension, setDimension] = useState({ long: 0, wide: 0, high: 0 });
+  const [rectangular, setRectangular] = useState({ long: 0, wide: 0, high: 0 });
+  const [cylinder, setCylinder] = useState({ long: 0, wide: 0 });
   const [windmill, setWindmill] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
   const [house, setHouse] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
   const [cloud, setCloud] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
@@ -20,7 +21,8 @@ function App() {
         setWindmill={setWindmill}
         setHouse={setHouse}
         setCloud={setCloud}
-        dimension={dimension}
+        rectangular={rectangular}
+        cylinder={cylinder}
         typeDraw={typeDraw}
       />
       <Controls
@@ -30,7 +32,8 @@ function App() {
         windmill={windmill}
         house={house}
         cloud={cloud}
-        setDimension={setDimension}
+        setRectangular={setRectangular}
+        setCylinder={setCylinder}
         setTypeDraw={setTypeDraw}
         typeDraw={typeDraw}
       />

@@ -797,6 +797,7 @@ export {
   drawLineWithDefaulFunction as drawLine,
   drawTriangle,
   drawLineUsingBreseham,
+  CC_fromComputerToHuman,
   drawCircle,
   drawFourPropeller,
   getFullCoorListOfCircle,

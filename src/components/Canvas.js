@@ -10,7 +10,8 @@ function Canvas({
   setHouse,
   setCloud,
   typeDraw,
-  dimension,
+  rectangular,
+  cylinder,
 }) {
   const [timeoutID, setTimeoutID] = useState(-1);
   const [degree, setDegree] = useState(0);
@@ -47,14 +48,22 @@ function Canvas({
     }
 
     if (!draw2D) {
-      draw_3D(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT, typeDraw, dimension);
+      draw_3D(
+        ctx,
+        rootPoint,
+        FRAME_WIDTH,
+        FRAME_HEIGHT,
+        typeDraw,
+        rectangular,
+        cylinder
+      );
     }
 
     return () => {
       ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
-      clearTimeout(timeoutID);
+      draw2D && clearTimeout(timeoutID);
     };
-  }, [isShowCoordinate, degree, draw2D, dimension, typeDraw]);
+  }, [isShowCoordinate, degree, draw2D, rectangular, cylinder, typeDraw]);
 
   return (
     <canvas

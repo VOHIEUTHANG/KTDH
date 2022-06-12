@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Button from "@mui/material/Button";
-export default function Rectangular({ setDimension }) {
+export default function Rectangular({ setRectangular }) {
   const [long, setLong] = useState(0);
   const [wide, setWide] = useState(0);
   const [high, setHigh] = useState(0);
@@ -46,7 +46,7 @@ export default function Rectangular({ setDimension }) {
         size="large"
         className="w-full  py-4 mt-4 text-lg bg-blue-400 hover:bg-blue-500 font-bold  text-white"
         onClick={() => {
-          setDimension({ long, wide, high });
+          setRectangular({ long, wide, high });
         }}
       >
         Vẽ
