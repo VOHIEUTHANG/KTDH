@@ -5,10 +5,9 @@ export default function draw3DCoordiante(
   FRAME_WIDTH,
   FRAME_HEIGHT
 ) {
-  console.log(rootPoint);
-  const [x0, y0] = CC_fromHumanToComputer(rootPoint, 0, 0);
+  const [x0, y0] = CC_fromHumanToComputer(rootPoint, 80 - 120, 0);
   const [x1, y1] = CC_fromHumanToComputer(rootPoint, 120, 0);
-  const [x2, y2] = CC_fromHumanToComputer(rootPoint, 0, 80);
+  const [x2, y2] = CC_fromHumanToComputer(rootPoint, 80 - 120, 80);
   const [x3, y3] = CC_fromHumanToComputer(rootPoint, -120, -80);
 
   drawLine(ctx, x0, y0, x1, y1, "#777");

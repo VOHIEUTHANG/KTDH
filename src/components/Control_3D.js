@@ -1,5 +1,3 @@
-import RectangleIcon from "@mui/icons-material/Rectangle";
-import { useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -8,9 +6,12 @@ import { Button } from "@mui/material/";
 import Cylinder from "./Cylinder";
 import Reactangular from "./Rectangular";
 
-export default function Control_3D({ setDraw2D, setDimension }) {
-  const [typeDraw, setTypeDraw] = useState(1);
-
+export default function Control_3D({
+  setDraw2D,
+  setTypeDraw,
+  typeDraw,
+  setDimension,
+}) {
   const handleChange = (e) => {
     setTypeDraw(Number(e.target.value));
   };
@@ -42,12 +43,11 @@ export default function Control_3D({ setDraw2D, setDimension }) {
         variant="container"
         size="large"
         className="w-full  py-4 mt-auto text-lg bg-blue-400 hover:bg-blue-500 font-bold  text-white"
-        endIcon={<RectangleIcon />}
         onClick={() => {
           setDraw2D((prev) => !prev);
         }}
       >
-        2D coordinate
+        Hệ tọa độ 2D
       </Button>
     </div>
   );

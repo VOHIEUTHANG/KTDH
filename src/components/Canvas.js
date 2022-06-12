@@ -3,7 +3,15 @@ import draw_2D from "../core/draw_2D";
 import draw_3D from "../core/draw_3D";
 import drawCoordinate from "../core/draw_2D_coordinate";
 
-function Canvas({ isShowCoordinate, draw2D, setWindmill, setHouse, setCloud }) {
+function Canvas({
+  isShowCoordinate,
+  draw2D,
+  setWindmill,
+  setHouse,
+  setCloud,
+  typeDraw,
+  dimension,
+}) {
   const [timeoutID, setTimeoutID] = useState(-1);
   const [degree, setDegree] = useState(0);
 
@@ -16,9 +24,8 @@ function Canvas({ isShowCoordinate, draw2D, setWindmill, setHouse, setCloud }) {
     const { drawCoordinateSystem, rootPoint, FRAME_HEIGHT, FRAME_WIDTH, ctx } =
       drawCoordinate(canvasRef.current);
 
-    draw2D && drawCoordinateSystem(isShowCoordinate);
-
-    draw2D &&
+    if (draw2D) {
+      drawCoordinateSystem(isShowCoordinate);
       draw_2D(
         ctx,
         rootPoint,
@@ -37,14 +44,17 @@ function Canvas({ isShowCoordinate, draw2D, setWindmill, setHouse, setCloud }) {
         setHouse,
         setCloud
       );
-    if (!draw2D) {
-      draw_3D(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT);
     }
+
+    if (!draw2D) {
+      draw_3D(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT, typeDraw, dimension);
+    }
+
     return () => {
       ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_WIDTH);
       clearTimeout(timeoutID);
     };
-  }, [isShowCoordinate, degree, draw2D]);
+  }, [isShowCoordinate, degree, draw2D, dimension, typeDraw]);
 
   return (
     <canvas

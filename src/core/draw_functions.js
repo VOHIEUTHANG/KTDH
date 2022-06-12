@@ -3,7 +3,12 @@ import {
   createRotateMatrix,
   createTranslationMatrix,
 } from "./matrix_calculator";
-const drawLine = (ctx, x1, y1, x2, y2, color = "black") => {
+const convert2DTo3DWidthCabinet = (x, y, z) => {
+  const X = Math.round(x - z / (2 * Math.sqrt(2)));
+  const Y = Math.round(y - z / (2 * Math.sqrt(2)));
+  return [X, Y];
+};
+const drawLineWithDefaulFunction = (ctx, x1, y1, x2, y2, color = "black") => {
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
   ctx.strokeStyle = color;
@@ -63,6 +68,27 @@ const getCoorListWidthBresenham = (x1, y1, x2, y2) => {
     }
   }
   return coorList;
+};
+const drawLineUsingBreseham = (
+  ctx,
+  rootPoint,
+  x1,
+  x2,
+  x3,
+  x4,
+  color = [120, 120, 0],
+  type = 1
+) => {
+  const coorList = getCoorListWidthBresenham(x1, x2, x3, x4);
+  if (type == 1) drawWidthObjectCoor(ctx, rootPoint, coorList, color);
+  else if (type == 2) {
+    coorList.forEach((coor, index) => {
+      if (index % 3 != 2) {
+        const [x, y] = CC_fromHumanToComputer(rootPoint, coor.x, coor.y);
+        putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
+      }
+    });
+  }
 };
 const getRotateCoorList = (initialCoorList, deg, translationPoint) => {
   return initialCoorList.map((coor) => {
@@ -760,8 +786,9 @@ export {
   drawRectangle,
   putPixel,
   drawTrapezoid,
-  drawLine,
+  drawLineWithDefaulFunction as drawLine,
   drawTriangle,
+  drawLineUsingBreseham,
   drawCircle,
   drawFourPropeller,
   drawDoorOfWindmill,
@@ -769,6 +796,7 @@ export {
   drawWidthObjectCoor,
   drawGrass,
   drawFence,
+  convert2DTo3DWidthCabinet,
   gethalfCircleCoorList,
   getCoorListWidthBresenham,
   drawCloud,

@@ -10,7 +10,8 @@ function App() {
   const [windmill, setWindmill] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
   const [house, setHouse] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
   const [cloud, setCloud] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
-  console.log("dimension", dimension);
+  const [typeDraw, setTypeDraw] = useState(1);
+
   return (
     <div className="flex justify-center items-center w-screen h-screen bg-gradient-to-r from-indigo-800 to-pink-800">
       <Canvas
@@ -20,6 +21,7 @@ function App() {
         setHouse={setHouse}
         setCloud={setCloud}
         dimension={dimension}
+        typeDraw={typeDraw}
       />
       <Controls
         ShowCoordinate={{ setShowCoordinate, showCoordinate }}
@@ -29,6 +31,8 @@ function App() {
         house={house}
         cloud={cloud}
         setDimension={setDimension}
+        setTypeDraw={setTypeDraw}
+        typeDraw={typeDraw}
       />
     </div>
   );

@@ -45,7 +45,7 @@ export default function Control_2D({
           });
         }}
       >
-        Toggle Coordinate
+        Ẩn hiện tọa độ
       </Button>
 
       <Button
@@ -57,7 +57,7 @@ export default function Control_2D({
           setDraw2D((prev) => !prev);
         }}
       >
-        3D coordinate
+        Hệ tọa độ 3D
       </Button>
     </div>
   );

@@ -8,7 +8,7 @@ export default function Cylinder({ setDimension }) {
   return (
     <div>
       <hr className="my-6" />
-      <p class=" text-center text-lg text-blue-700 mb-3">
+      <p className=" text-center text-lg text-blue-700 mb-3">
         Nhập kích thước của hình trụ
       </p>
       <TextField
