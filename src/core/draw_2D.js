@@ -134,29 +134,29 @@ const drawWindmill = (
 
   // ANIMATION ===============>
 
-  const TimeoutID = setTimeout(() => {
-    setTimeoutID(TimeoutID);
-    clearTimeout(TimeoutID);
-    setDegree((prevDeg) => {
-      if (prevDeg >= 360) {
-        return 0;
-      }
-      return (prevDeg += 4);
-    });
+  // const TimeoutID = setTimeout(() => {
+  //   setTimeoutID(TimeoutID);
+  //   clearTimeout(TimeoutID);
+  //   setDegree((prevDeg) => {
+  //     if (prevDeg >= 360) {
+  //       return 0;
+  //     }
+  //     return (prevDeg += 4);
+  //   });
 
-    setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
-    setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
-    setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
-    setWindmill((prev) => {
-      return {
-        ...prev,
-        x1: centerCircle.x,
-        y1: centerCircle.y,
-        x2: topUpperPointOfPropeller[0],
-        y2: topUpperPointOfPropeller[1],
-      };
-    });
-  }, 1);
+  //   setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
+  //   setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
+  //   setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
+  //   setWindmill((prev) => {
+  //     return {
+  //       ...prev,
+  //       x1: centerCircle.x,
+  //       y1: centerCircle.y,
+  //       x2: topUpperPointOfPropeller[0],
+  //       y2: topUpperPointOfPropeller[1],
+  //     };
+  //   });
+  // }, 1);
 };
 const drawHouse = (ctx, rootPoint, symmetricalLine, setHouse) => {
   const leftUpperPoint = { x: 40, y: 74 };
@@ -340,7 +340,7 @@ export default function draw_2D(
   const [x2, y2] = CC_fromHumanToComputer(rootPoint, locationCloud2, 67);
   putPixel(ctx, x2, y2, "red", 4);
 
-  drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
+  // drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
   drawFences(
     ctx,
     rootPoint,

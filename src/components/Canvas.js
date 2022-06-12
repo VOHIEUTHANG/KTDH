@@ -1,4 +1,3 @@
-import { clear } from "@testing-library/user-event/dist/clear";
 import { useRef, useEffect, useState } from "react";
 import draw_2D from "../core/draw_2D";
 import draw_3D from "../core/draw_3D";
@@ -16,7 +15,9 @@ function Canvas({ isShowCoordinate, draw2D, setWindmill, setHouse, setCloud }) {
   useEffect(() => {
     const { drawCoordinateSystem, rootPoint, FRAME_HEIGHT, FRAME_WIDTH, ctx } =
       drawCoordinate(canvasRef.current);
-    drawCoordinateSystem(isShowCoordinate);
+
+    draw2D && drawCoordinateSystem(isShowCoordinate);
+
     draw2D &&
       draw_2D(
         ctx,

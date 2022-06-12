@@ -1,7 +1,10 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { useState } from "react";
 
-export default function Cylinder() {
+export default function Cylinder({ setDimension }) {
+  const [radius, setRadius] = useState(0);
+  const [high, setHigh] = useState(0);
   return (
     <div>
       <hr className="my-6" />
@@ -12,18 +15,29 @@ export default function Cylinder() {
         id="outlined-basic"
         label="Bán kính"
         variant="outlined"
+        value={radius}
+        onInput={(e) => {
+          setRadius(Number(e.target.value));
+        }}
         className="w-full my-3"
       />
       <TextField
         id="outlined-basic"
         label="Chiều cao"
         variant="outlined"
+        value={high}
+        onInput={(e) => {
+          setHigh(Number(e.target.value));
+        }}
         className="w-full my-3"
       />
       <Button
         variant="container"
         size="large"
         className="w-full  py-4 mt-4 text-lg bg-blue-400 hover:bg-blue-500 font-bold  text-white"
+        onClick={() => {
+          setDimension({ radius, high });
+        }}
       >
         Vẽ
       </Button>

@@ -8,8 +8,9 @@ import { Button } from "@mui/material/";
 import Cylinder from "./Cylinder";
 import Reactangular from "./Rectangular";
 
-export default function Control_3D({ setDraw2D }) {
+export default function Control_3D({ setDraw2D, setDimension }) {
   const [typeDraw, setTypeDraw] = useState(1);
+
   const handleChange = (e) => {
     setTypeDraw(Number(e.target.value));
   };
@@ -32,7 +33,11 @@ export default function Control_3D({ setDraw2D }) {
           <MenuItem value={2}>Hình trụ</MenuItem>
         </Select>
       </FormControl>
-      {typeDraw == 1 ? <Reactangular /> : <Cylinder />}
+      {typeDraw == 1 ? (
+        <Reactangular setDimension={setDimension} />
+      ) : (
+        <Cylinder setDimension={setDimension} />
+      )}
       <Button
         variant="container"
         size="large"
