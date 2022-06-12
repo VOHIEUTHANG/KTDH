@@ -8,6 +8,35 @@ const convert2DTo3DWidthCabinet = (x, y, z) => {
   const Y = Math.round(y - z / (2 * Math.sqrt(2)));
   return [X, Y];
 };
+const convertCoordinateFrom3DTo2D = (rootPoint, x, y, z) => {
+  const [a, b] = convert2DTo3DWidthCabinet(x, y, z);
+  return CC_fromHumanToComputer(rootPoint, a, b);
+};
+const drawLineUsingBreseham = (
+  ctx,
+  rootPoint,
+  x1,
+  x2,
+  x3,
+  x4,
+  color = [120, 120, 0],
+  type = 1
+) => {
+  const coorList = getCoorListWidthBresenham(x1, x2, x3, x4);
+  if (type == 1) drawWidthObjectCoor(ctx, rootPoint, coorList, color);
+  else if (type == 2) {
+    coorList.forEach((coor, index) => {
+      if (index % 3 != 2) {
+        const [x, y] = CC_fromHumanToComputer(rootPoint, coor.x, coor.y);
+        putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
+      }
+    });
+  }
+};
+const getFullCoorListOfCircle = (r, centerPoint) => {
+  const an8thCoordinate = getAn8thCoordinateListOfCircleWidthBresenham(r);
+  return getFullCoordinateList(an8thCoordinate, centerPoint);
+};
 const drawLineWithDefaulFunction = (ctx, x1, y1, x2, y2, color = "black") => {
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
@@ -68,27 +97,6 @@ const getCoorListWidthBresenham = (x1, y1, x2, y2) => {
     }
   }
   return coorList;
-};
-const drawLineUsingBreseham = (
-  ctx,
-  rootPoint,
-  x1,
-  x2,
-  x3,
-  x4,
-  color = [120, 120, 0],
-  type = 1
-) => {
-  const coorList = getCoorListWidthBresenham(x1, x2, x3, x4);
-  if (type == 1) drawWidthObjectCoor(ctx, rootPoint, coorList, color);
-  else if (type == 2) {
-    coorList.forEach((coor, index) => {
-      if (index % 3 != 2) {
-        const [x, y] = CC_fromHumanToComputer(rootPoint, coor.x, coor.y);
-        putPixel(ctx, x, y, `rgb(${color[0]},${color[1]},${color[2]})`, 3);
-      }
-    });
-  }
 };
 const getRotateCoorList = (initialCoorList, deg, translationPoint) => {
   return initialCoorList.map((coor) => {
@@ -791,7 +799,9 @@ export {
   drawLineUsingBreseham,
   drawCircle,
   drawFourPropeller,
+  getFullCoorListOfCircle,
   drawDoorOfWindmill,
+  convertCoordinateFrom3DTo2D,
   drawLake,
   drawWidthObjectCoor,
   drawGrass,

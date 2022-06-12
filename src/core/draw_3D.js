@@ -2,9 +2,12 @@ import {
   convert2DTo3DWidthCabinet,
   putPixel,
   drawLineUsingBreseham,
+  getFullCoorListOfCircle,
+  convertCoordinateFrom3DTo2D,
   matrixMultiply,
   CC_fromHumanToComputer,
 } from "./draw_functions";
+
 import draw3DCoordiante from "./draw_3D_coordinate";
 import Control_2D from "../components/Control_2D";
 const drawRectangular = (ctx, rootPoint, { long, wide, high }) => {
@@ -51,9 +54,54 @@ const drawRectangular = (ctx, rootPoint, { long, wide, high }) => {
   drawLineUsingBreseham(ctx, rootPoint, x7, y7, x6, y6, [120, 120, 0]);
   drawLineUsingBreseham(ctx, rootPoint, x8, y8, x7, y7, [120, 120, 0]);
 };
-const drawCylinder = ({ radius, high }) => {
+const drawCylinder = (ctx, rootPoint, { radius, high }) => {
   radius = Math.round(radius);
   high = Math.round(high);
+
+  let a1 = [radius * 2 - 40, 0, radius];
+  let a2 = [-40, 0, radius];
+  let a3 = [radius * 2 - 40, high, radius];
+  let a4 = [-40, high, radius];
+
+  let r1 = [radius - 40, 0, radius];
+  let r2 = [radius - 40, high, radius];
+
+  a1 = convert2DTo3DWidthCabinet(a1[0], a1[1], a1[2]);
+  a2 = convert2DTo3DWidthCabinet(a2[0], a2[1], a2[2]);
+  a3 = convert2DTo3DWidthCabinet(a3[0], a3[1], a3[2]);
+  a4 = convert2DTo3DWidthCabinet(a4[0], a4[1], a4[2]);
+
+  const [x1, y1] = a1;
+  const [x2, y2] = a2;
+  const [x3, y3] = a3;
+  const [x4, y4] = a4;
+
+  // drawLineUsingBreseham(ctx, rootPoint, x1, y1, x3, y3, [0, 120, 0]);
+
+  const circleCoorList = getFullCoorListOfCircle(radius, {
+    x: radius - 40,
+    y: radius,
+  });
+  const bottomCircleList = circleCoorList.map((coor) => {
+    return [coor.x, 0, coor.y];
+  });
+  const topCircleList = circleCoorList.map((coor) => {
+    return [coor.x, high, coor.y];
+  });
+
+  const bottomCircle2DCoorLit = bottomCircleList.map((coor) => {
+    return convertCoordinateFrom3DTo2D(rootPoint, coor[0], coor[1], coor[2]);
+  });
+  const topCircle2DCoorLit = topCircleList.map((coor) => {
+    return convertCoordinateFrom3DTo2D(rootPoint, coor[0], coor[1], coor[2]);
+  });
+
+  bottomCircle2DCoorLit.forEach((coor) => {
+    putPixel(ctx, coor[0], coor[1], "green", 4);
+  });
+  topCircle2DCoorLit.forEach((coor) => {
+    putPixel(ctx, coor[0], coor[1], "green", 4);
+  });
 };
 export default function draw_3D(
   ctx,
