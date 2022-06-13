@@ -84,18 +84,54 @@ const drawCylinder = (ctx, rootPoint, { radius, high }) => {
   let minX = 1200;
   const a1 = { x: 0, y: 0 };
   const a2 = { x: 0, y: 0 };
+  let maxIndex = -1;
+  let minIndex = -1;
 
-  bottomCircle2DCoorLit.forEach((coor) => {
+  bottomCircle2DCoorLit.forEach((coor, index) => {
     if (coor[0] > maxX) {
       maxX = coor[0];
       a1.x = coor[0];
       a1.y = coor[1];
+      maxIndex = index;
     }
     if (coor[0] < minX) {
       minX = coor[0];
       a2.x = coor[0];
       a2.y = coor[1];
+      minIndex = index;
     }
+  });
+
+  const behindHalfOfBottomCircleCoorList = bottomCircle2DCoorLit.slice(
+    maxIndex,
+    minIndex
+  );
+  console.log(behindHalfOfBottomCircleCoorList.length);
+
+  bottomCircle2DCoorLit.splice(
+    maxIndex,
+    behindHalfOfBottomCircleCoorList.length
+  );
+
+  let unique = behindHalfOfBottomCircleCoorList.filter((coor, i, arr) => {
+    for (let j = 0; j < i; j++) {
+      if (
+        coor[0] == behindHalfOfBottomCircleCoorList[j][0] &&
+        coor[1] == behindHalfOfBottomCircleCoorList[j][1]
+      ) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  unique.forEach((coor, index) => {
+    if (index % 3 != 2) {
+      putPixel(ctx, coor[0], coor[1], "green", 4);
+    }
+  });
+
+  bottomCircle2DCoorLit.forEach((coor) => {
     putPixel(ctx, coor[0], coor[1], "green", 4);
   });
 
