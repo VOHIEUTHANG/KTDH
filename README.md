@@ -1,17 +1,13 @@
-# ĐỒ ÁN MÔN KỸ THUẬT ĐỒ HỌA
+# Graphic Engineering
 
-## <== MEMBER ===>
+### Technologies: ReactJS,TailwindCss,MaterialUI,
 
-## 1. Thắng Võ (Devo)
+### Core: Canvas Manipulation
 
-## 2. Tình Nguyễn
-
-## 3. My Trần
-
-## 4. Trang Phạm
-
-## <=== Demonstration ===>
+## 2D Coordinate ======>
 
 ![The San Juan Mountains are beautiful!](/public/2dCoordinate.png "San Juan Mountains")
+
+## 3D Coordinate =======>
 
 ![The San Juan Mountains are beautiful!](/public/3dCoordiante.png "San Juan Mountains")
