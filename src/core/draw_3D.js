@@ -127,12 +127,12 @@ const drawCylinder = (ctx, rootPoint, { radius, high }) => {
 
   unique.forEach((coor, index) => {
     if (index % 3 != 2) {
-      putPixel(ctx, coor[0], coor[1], "green", 4);
+      putPixel(ctx, coor[0], coor[1], "blue", 4);
     }
   });
 
   bottomCircle2DCoorLit.forEach((coor) => {
-    putPixel(ctx, coor[0], coor[1], "green", 4);
+    putPixel(ctx, coor[0], coor[1], "blue", 4);
   });
 
   maxX = 0;
@@ -151,7 +151,7 @@ const drawCylinder = (ctx, rootPoint, { radius, high }) => {
       a4.x = coor[0];
       a4.y = coor[1];
     }
-    putPixel(ctx, coor[0], coor[1], "green", 4);
+    putPixel(ctx, coor[0], coor[1], "blue", 4);
   });
 
   const [x1, y1] = CC_fromComputerToHuman(rootPoint, a1.x, a1.y);
@@ -159,8 +159,8 @@ const drawCylinder = (ctx, rootPoint, { radius, high }) => {
   const [x3, y3] = CC_fromComputerToHuman(rootPoint, a3.x, a3.y);
   const [x4, y4] = CC_fromComputerToHuman(rootPoint, a4.x, a4.y);
 
-  drawLineUsingBreseham(ctx, rootPoint, x1, y1, x3, y3, [0, 120, 0]);
-  drawLineUsingBreseham(ctx, rootPoint, x2, y2, x4, y4, [0, 120, 0]);
+  drawLineUsingBreseham(ctx, rootPoint, x1, y1, x3, y3, [0, 0, 255]);
+  drawLineUsingBreseham(ctx, rootPoint, x2, y2, x4, y4, [0, 0, 255]);
 };
 
 export default function draw_3D(

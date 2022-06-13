@@ -110,8 +110,10 @@ const drawWindmill = (
     topUpperPointOfPropeller[1]
   );
 
-  putPixel(ctx, x1, y1, "red", 4);
-  putPixel(ctx, x2, y2, "red", 4);
+  // ============================================================================================>
+  // putPixel(ctx, x1, y1, "red", 4);
+  // putPixel(ctx, x2, y2, "red", 4);
+  // ============================================================================================>
 
   // Cloud handler
 
@@ -134,29 +136,29 @@ const drawWindmill = (
 
   // ANIMATION ===============>
 
-  // const TimeoutID = setTimeout(() => {
-  //   setTimeoutID(TimeoutID);
-  //   clearTimeout(TimeoutID);
-  //   setDegree((prevDeg) => {
-  //     if (prevDeg >= 360) {
-  //       return 0;
-  //     }
-  //     return (prevDeg += 4);
-  //   });
+  const TimeoutID = setTimeout(() => {
+    setTimeoutID(TimeoutID);
+    clearTimeout(TimeoutID);
+    setDegree((prevDeg) => {
+      if (prevDeg >= 360) {
+        return 0;
+      }
+      return (prevDeg += 4);
+    });
 
-  //   setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
-  //   setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
-  //   setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
-  //   setWindmill((prev) => {
-  //     return {
-  //       ...prev,
-  //       x1: centerCircle.x,
-  //       y1: centerCircle.y,
-  //       x2: topUpperPointOfPropeller[0],
-  //       y2: topUpperPointOfPropeller[1],
-  //     };
-  //   });
-  // }, 1);
+    setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
+    setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
+    setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
+    setWindmill((prev) => {
+      return {
+        ...prev,
+        x1: centerCircle.x,
+        y1: centerCircle.y,
+        x2: topUpperPointOfPropeller[0],
+        y2: topUpperPointOfPropeller[1],
+      };
+    });
+  }, 1);
 };
 const drawHouse = (ctx, rootPoint, symmetricalLine, setHouse) => {
   const leftUpperPoint = { x: 40, y: 74 };
@@ -264,13 +266,16 @@ const drawHouse = (ctx, rootPoint, symmetricalLine, setHouse) => {
     leftBottomPoint.x,
     leftBottomPoint.y
   );
-  putPixel(ctx, x1, y1, "red", 4);
   const [x2, y2] = CC_fromHumanToComputer(
     rootPoint,
     bottomCenterPoint.x,
     bottomCenterPoint.y
   );
-  putPixel(ctx, x2, y2, "red", 4);
+
+  // =======================================================================================>
+  // putPixel(ctx, x2, y2, "red", 4);
+  // putPixel(ctx, x1, y1, "red", 4);
+  // =======================================================================================>
 
   const houseShadowCoorList = houseCoorList.map((coor) => ({
     ...coor,
@@ -335,12 +340,15 @@ export default function draw_2D(
   setCloud((prev) => {
     return { ...prev, x1: locationCloud1, y1: 60, x2: locationCloud2, y2: 67 };
   });
-  const [x1, y1] = CC_fromHumanToComputer(rootPoint, locationCloud1, 60);
-  putPixel(ctx, x1, y1, "red", 4);
-  const [x2, y2] = CC_fromHumanToComputer(rootPoint, locationCloud2, 67);
-  putPixel(ctx, x2, y2, "red", 4);
 
-  // drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
+  const [x1, y1] = CC_fromHumanToComputer(rootPoint, locationCloud1, 60);
+  const [x2, y2] = CC_fromHumanToComputer(rootPoint, locationCloud2, 67);
+
+  // RED POINT AT HERE ==============>
+  // putPixel(ctx, x1, y1, "red", 4);
+  // putPixel(ctx, x2, y2, "red", 4);
+
+  drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
   drawFences(
     ctx,
     rootPoint,
@@ -352,7 +360,9 @@ export default function draw_2D(
     [176, 150, 58]
   );
 
+  // RED POINT AT HERE ==============>
   drawHouse(ctx, rootPoint, 20, setHouse);
+
   drawLake(
     ctx,
     rootPoint,
@@ -362,6 +372,8 @@ export default function draw_2D(
     [150, 150, 150],
     [118, 211, 232]
   );
+
+  // RED POINT AT HERE ==============>
   drawWindmill(
     ctx,
     rootPoint,
