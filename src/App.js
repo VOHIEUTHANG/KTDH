@@ -13,6 +13,8 @@ function App() {
   const [cloud, setCloud] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
   const [typeDraw, setTypeDraw] = useState(1);
 
+  console.log("App rendering ...");
+
   return (
     <div className="flex justify-center items-center w-screen h-screen bg-gradient-to-r from-indigo-800 to-pink-800">
       <Canvas
