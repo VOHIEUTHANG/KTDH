@@ -1,6 +1,7 @@
 # Graphic Engineering
 
-### Technologies: ReactJS,TailwindCss,MaterialUI,
+### Technologies: ReactJS,TailwindCss,MaterialUI
+
 
 ### Core: Canvas Manipulation
 
