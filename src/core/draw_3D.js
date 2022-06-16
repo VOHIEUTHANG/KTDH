@@ -172,21 +172,21 @@ export default function draw_3D(
   rectangular,
   cylinder
 ) {
-  // draw3DCoordiante(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT);
-  // console.log(typeDraw);
-  // if (typeDraw == 1) {
-  //   if (
-  //     rectangular.long != 0 &&
-  //     rectangular.wide != 0 &&
-  //     rectangular.high != 0
-  //   ) {
-  //     drawRectangular(ctx, rootPoint, rectangular);
-  //   }
-  // } else if (typeDraw == 2) {
-  //   if (cylinder.radius != 0 && cylinder.high != 0) {
-  //     drawCylinder(ctx, rootPoint, cylinder);
-  //   }
-  // } else {
-  //   console.log("invalid type draw");
-  // }
+  draw3DCoordiante(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT);
+  console.log(typeDraw);
+  if (typeDraw == 1) {
+    if (
+      rectangular.long != 0 &&
+      rectangular.wide != 0 &&
+      rectangular.high != 0
+    ) {
+      drawRectangular(ctx, rootPoint, rectangular);
+    }
+  } else if (typeDraw == 2) {
+    if (cylinder.radius != 0 && cylinder.high != 0) {
+      drawCylinder(ctx, rootPoint, cylinder);
+    }
+  } else {
+    console.log("invalid type draw");
+  }
 }

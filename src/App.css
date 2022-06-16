@@ -8,3 +8,7 @@
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+#root {
+  min-width: 1920px;
+  min-height: 1080px;
+}
