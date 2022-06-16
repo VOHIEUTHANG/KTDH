@@ -374,6 +374,7 @@ export default function draw_2D(
   );
 
   // RED POINT AT HERE ==============>
+
   drawWindmill(
     ctx,
     rootPoint,

@@ -71,7 +71,7 @@ function Canvas({
       ref={canvasRef}
       className="bg-white rounded-xl overflow-hidden"
       width="1200px"
-      height="800px"
+      height={"800px"}
     />
   );
 }
