@@ -3,11 +3,13 @@ import {
   createRotateMatrix,
   createTranslationMatrix,
 } from "./matrix_calculator";
+
 const convert2DTo3DWidthCabinet = (x, y, z) => {
   const X = Math.round(x - z / (2 * Math.sqrt(2)));
   const Y = Math.round(y - z / (2 * Math.sqrt(2)));
   return [X, Y];
 };
+
 const convertCoordinateFrom3DTo2D = (rootPoint, x, y, z) => {
   const [a, b] = convert2DTo3DWidthCabinet(x, y, z);
   return CC_fromHumanToComputer(rootPoint, a, b);
@@ -259,7 +261,7 @@ const tintColor = (ctx, rootPoint, x, y, color, border) => {
     JSON.stringify(currentColor) !== JSON.stringify(color) &&
     JSON.stringify(currentColor) !== JSON.stringify(border)
   ) {
-    putPixel(ctx, x_c, y_c, `rgba(${color[0]},${color[1]},${color[2]})`);
+    putPixel(ctx, x_c, y_c, `rgb(${color[0]},${color[1]},${color[2]})`);
     tintColor(ctx, rootPoint, x - 1, y, color, border);
     tintColor(ctx, rootPoint, x + 1, y, color, border);
     tintColor(ctx, rootPoint, x, y - 1, color, border);

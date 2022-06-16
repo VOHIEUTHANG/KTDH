@@ -1,7 +1,7 @@
 {
   "name": "draw_app",
   "version": "0.1.0",
-  "homepage": "https://vohieuthang.github.io/KTDH",
+  "homepage": "https://VOHIEUTHANG.github.io/KTDH",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",
