@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/KTDH/static/css/main.c56909aa.css",
-    "main.js": "/KTDH/static/js/main.ea64113b.js",
+    "main.css": "/KTDH/static/css/main.fa6c4e86.css",
+    "main.js": "/KTDH/static/js/main.1228ffcb.js",
     "index.html": "/KTDH/index.html",
-    "main.c56909aa.css.map": "/KTDH/static/css/main.c56909aa.css.map",
-    "main.ea64113b.js.map": "/KTDH/static/js/main.ea64113b.js.map"
+    "main.fa6c4e86.css.map": "/KTDH/static/css/main.fa6c4e86.css.map",
+    "main.1228ffcb.js.map": "/KTDH/static/js/main.1228ffcb.js.map"
   },
   "entrypoints": [
-    "static/css/main.c56909aa.css",
-    "static/js/main.ea64113b.js"
+    "static/css/main.fa6c4e86.css",
+    "static/js/main.1228ffcb.js"
   ]
 }
