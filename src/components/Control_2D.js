@@ -25,6 +25,7 @@ export default function Control_2D({
           img="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/suburban-house-royalty-free-image-1584972559.jpg"
           coorVal={house}
         />
+        <hr className="my-2" />
         <TextField
           img="https://images.unsplash.com/photo-1569428034239-f9565e32e224?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80"
           coorVal={cloud}

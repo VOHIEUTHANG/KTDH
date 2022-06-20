@@ -1,8 +1,8 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useState, memo } from "react";
 
-export default function Cylinder({ setCylinder }) {
+function Cylinder({ setCylinder }) {
   const [radius, setRadius] = useState(0);
   const [high, setHigh] = useState(0);
   return (
@@ -44,3 +44,5 @@ export default function Cylinder({ setCylinder }) {
     </div>
   );
 }
+
+export default memo(Cylinder);

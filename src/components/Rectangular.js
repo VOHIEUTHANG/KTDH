@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useState, memo } from "react";
 import Button from "@mui/material/Button";
-export default function Rectangular({ setRectangular }) {
+function Rectangular({ setRectangular }) {
   const [long, setLong] = useState(0);
   const [wide, setWide] = useState(0);
   const [high, setHigh] = useState(0);
@@ -54,3 +54,5 @@ export default function Rectangular({ setRectangular }) {
     </div>
   );
 }
+
+export default memo(Rectangular);

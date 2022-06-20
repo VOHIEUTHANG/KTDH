@@ -68,6 +68,7 @@ const getCoorListWidthBresenham = (x1, y1, x2, y2) => {
   let p_case2 = 2 * Dx - Dy;
   const c1_case2 = 2 * Dx;
   const c2_case2 = 2 * (Dx - Dy);
+
   let p_case1 = 2 * Dy - Dx;
   const c1_case1 = 2 * Dy;
   const c2_case1 = 2 * (Dy - Dx);
