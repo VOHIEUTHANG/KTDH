@@ -11,6 +11,29 @@ import {
 } from "./draw_functions";
 
 import draw3DCoordiante from "./draw_3D_coordinate";
+
+const getText = (pointName, point) =>
+  `${pointName}(${point[0]},${point[1]},${point[2]})`;
+const drawTextFromInitialPoint = (
+  rootPoint,
+  ctx,
+  x1,
+  y1,
+  point,
+  text,
+  distanceX = 6,
+  distanceY = -10,
+  color = "dodgerblue"
+) => {
+  const [a, b] = CC_fromHumanToComputer(rootPoint, x1, y1);
+  drawText(
+    ctx,
+    "dodgerblue",
+    getText(text, [point[0] + 40, point[1], point[2]]),
+    a + distanceX,
+    b + distanceY
+  );
+};
 const drawRectangular = (ctx, rootPoint, { long, wide, high, x, y, z }) => {
   long = Math.round(long);
   wide = Math.round(wide);
@@ -29,9 +52,6 @@ const drawRectangular = (ctx, rootPoint, { long, wide, high, x, y, z }) => {
   let a6 = [xa + long, ya + high, za + wide];
   let a7 = [xa, ya + high, za + wide];
   let a8 = [xa, ya + high, za];
-
-  const getText = (pointName, point) =>
-    `${pointName}(${point[0]},${point[1]},${point[2]})`;
 
   // Convet from 3D coordinate to 2D coordinate with Cabinet.
   const a1_c = convert2DTo3DWidthCabinet(a1[0], a1[1], a1[2]);
@@ -66,27 +86,6 @@ const drawRectangular = (ctx, rootPoint, { long, wide, high, x, y, z }) => {
   drawLineUsingBreseham(ctx, rootPoint, x7, y7, x6, y6, [80, 20, 50]);
   drawLineUsingBreseham(ctx, rootPoint, x8, y8, x7, y7, [80, 20, 50]);
 
-  const drawTextFromInitialPoint = (
-    rootPoint,
-    ctx,
-    x1,
-    y1,
-    point,
-    text,
-    distanceX = 6,
-    distanceY = -10,
-    color = "dodgerblue"
-  ) => {
-    const [a, b] = CC_fromHumanToComputer(rootPoint, x1, y1);
-    drawText(
-      ctx,
-      "dodgerblue",
-      getText(text, [point[0] + 40, point[1], point[2]]),
-      a + distanceX,
-      b + distanceY
-    );
-  };
-
   // Draw coordinate into canvas frame
   drawTextFromInitialPoint(rootPoint, ctx, x1, y1, a1, "A");
   drawTextFromInitialPoint(rootPoint, ctx, x2, y2, a2, "B");
@@ -106,8 +105,37 @@ const drawCylinder = (ctx, rootPoint, { radius, high, x, y, z }) => {
   z = Math.round(Number(z));
 
   let r1 = [x - 40, y, z];
-
   let r2 = [x - 40, y + high, z];
+
+  const [r1X, r1Y] = convertCoordinateFrom3DTo2D(
+    rootPoint,
+    r1[0],
+    r1[1],
+    r1[2]
+  );
+  putPixel(ctx, r1X, r1Y, "darkblue", 4);
+  drawText(
+    ctx,
+    "dodgerblue",
+    getText("O", [r1[0] + 40, r1[1], r1[2]]),
+    r1X + 10,
+    r1Y
+  );
+
+  const [r2X, r2Y] = convertCoordinateFrom3DTo2D(
+    rootPoint,
+    r2[0],
+    r2[1],
+    r2[2]
+  );
+  putPixel(ctx, r2X, r2Y, "darkblue", 4);
+  drawText(
+    ctx,
+    "dodgerblue",
+    getText("O'", [r2[0] + 40, r2[2], r2[2]]),
+    r2X + 10,
+    r2Y
+  );
 
   const circleCoorList = getFullCoorListOfCircle(radius, {
     x: r1[0],
@@ -174,14 +202,15 @@ const drawCylinder = (ctx, rootPoint, { radius, high, x, y, z }) => {
 
   unique.forEach((coor, index) => {
     if (index % 3 != 2) {
-      putPixel(ctx, coor[0], coor[1], "blue", 4);
+      putPixel(ctx, coor[0], coor[1], "darkblue", 4);
     }
   });
 
   bottomCircle2DCoorLit.forEach((coor) => {
-    putPixel(ctx, coor[0], coor[1], "blue", 4);
+    putPixel(ctx, coor[0], coor[1], "darkblue", 4);
   });
 
+  // Find min max of a point in topcircle
   maxX = 0;
   minX = 1200;
   const a3 = { x: 0, y: 0 };
@@ -198,16 +227,21 @@ const drawCylinder = (ctx, rootPoint, { radius, high, x, y, z }) => {
       a4.x = coor[0];
       a4.y = coor[1];
     }
-    putPixel(ctx, coor[0], coor[1], "blue", 4);
+    putPixel(ctx, coor[0], coor[1], "darkblue", 4);
   });
+
+  drawText(ctx, "dodgerblue", "A", a1.x + 10, a1.y);
+  drawText(ctx, "dodgerblue", "B", a2.x - 20, a2.y);
+  drawText(ctx, "dodgerblue", "C", a3.x + 10, a3.y);
+  drawText(ctx, "dodgerblue", "D", a4.x - 20, a4.y);
 
   const [x1, y1] = CC_fromComputerToHuman(rootPoint, a1.x, a1.y);
   const [x2, y2] = CC_fromComputerToHuman(rootPoint, a2.x, a2.y);
   const [x3, y3] = CC_fromComputerToHuman(rootPoint, a3.x, a3.y);
   const [x4, y4] = CC_fromComputerToHuman(rootPoint, a4.x, a4.y);
 
-  drawLineUsingBreseham(ctx, rootPoint, x1, y1, x3, y3, [0, 0, 255]);
-  drawLineUsingBreseham(ctx, rootPoint, x2, y2, x4, y4, [0, 0, 255]);
+  drawLineUsingBreseham(ctx, rootPoint, x1, y1, x3, y3, [0, 0, 139]);
+  drawLineUsingBreseham(ctx, rootPoint, x2, y2, x4, y4, [0, 0, 139]);
 };
 
 export default function draw_3D(
