@@ -14,6 +14,11 @@ const convertCoordinateFrom3DTo2D = (rootPoint, x, y, z) => {
   const [a, b] = convert2DTo3DWidthCabinet(x, y, z);
   return CC_fromHumanToComputer(rootPoint, a, b);
 };
+const drawText = (ctx, color = "dodgerblue", text = "TEXT", x, y) => {
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "dodgerblue";
+  ctx.fillText(text, x, y);
+};
 const drawLineUsingBreseham = (
   ctx,
   rootPoint,
@@ -815,4 +820,5 @@ export {
   getCoorListWidthBresenham,
   drawCloud,
   CC_fromHumanToComputer,
+  drawText,
 };

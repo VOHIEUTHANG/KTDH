@@ -1,4 +1,4 @@
-import { drawLine, CC_fromHumanToComputer } from "./draw_functions";
+import { drawLine, CC_fromHumanToComputer, drawText } from "./draw_functions";
 export default function draw3DCoordiante(
   ctx,
   rootPoint,
@@ -14,11 +14,9 @@ export default function draw3DCoordiante(
   const [x5, y5] = CC_fromHumanToComputer(rootPoint, -39, 75);
   const [x6, y6] = CC_fromHumanToComputer(rootPoint, -114, -78);
 
-  ctx.font = "20px Arial";
-  ctx.fillStyle = "dodgerblue";
-  ctx.fillText("X", x4, y4);
-  ctx.fillText("Y", x5, y5);
-  ctx.fillText("Z", x6, y6);
+  drawText(ctx, "dodgerblue", "X", x4, y4);
+  drawText(ctx, "dodgerblue", "Y", x5, y5);
+  drawText(ctx, "dodgerblue", "Z", x6, y6);
 
   drawLine(ctx, x0, y0, x1, y1, "#777");
   drawLine(ctx, x0, y0, x2, y2, "#777");
