@@ -8,7 +8,14 @@ function App() {
   const [isDisplay, setIsDisplay] = useState(false);
   const [showCoordinate, setShowCoordinate] = useState(3);
   const [draw2D, setDraw2D] = useState(true);
-  const [rectangular, setRectangular] = useState({ long: 0, wide: 0, high: 0 });
+  const [rectangular, setRectangular] = useState({
+    long: 0,
+    wide: 0,
+    high: 0,
+    x: 0,
+    y: 0,
+    z: 0,
+  });
   const [cylinder, setCylinder] = useState({ long: 0, wide: 0 });
   const [windmill, setWindmill] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
   const [house, setHouse] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });

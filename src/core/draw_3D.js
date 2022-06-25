@@ -10,21 +10,26 @@ import {
 } from "./draw_functions";
 
 import draw3DCoordiante from "./draw_3D_coordinate";
-import Control_2D from "../components/Control_2D";
-const drawRectangular = (ctx, rootPoint, { long, wide, high }) => {
+const drawRectangular = (ctx, rootPoint, { long, wide, high, x, y, z }) => {
   long = Math.round(long);
   wide = Math.round(wide);
   high = Math.round(high);
+  x = Math.round(Number(x));
+  y = Math.round(Number(y));
+  z = Math.round(Number(z));
 
-  let a1 = [-40, 0, 0];
-  let a2 = [long - 40, 0, 0];
-  let a3 = [long - 40, 0, wide];
-  let a4 = [-40, 0, wide];
-  let a5 = [long - 40, high, 0];
-  let a6 = [long - 40, high, wide];
-  let a7 = [-40, high, wide];
-  let a8 = [-40, high, 0];
+  let a1 = [x - 40, y, z];
+  const [xa, ya, za] = a1;
 
+  let a2 = [xa + long, ya, za];
+  let a3 = [xa + long, ya, za + wide];
+  let a4 = [xa, ya, za + wide];
+  let a5 = [xa + long, ya + high, za];
+  let a6 = [xa + long, ya + high, za + wide];
+  let a7 = [xa, ya + high, za + wide];
+  let a8 = [xa, ya + high, za];
+
+  a1 = convert2DTo3DWidthCabinet(a1[0], a1[1], a1[2]);
   a2 = convert2DTo3DWidthCabinet(a2[0], a2[1], a2[2]);
   a3 = convert2DTo3DWidthCabinet(a3[0], a3[1], a3[2]);
   a4 = convert2DTo3DWidthCabinet(a4[0], a4[1], a4[2]);
@@ -55,22 +60,26 @@ const drawRectangular = (ctx, rootPoint, { long, wide, high }) => {
   drawLineUsingBreseham(ctx, rootPoint, x7, y7, x6, y6, [120, 120, 0]);
   drawLineUsingBreseham(ctx, rootPoint, x8, y8, x7, y7, [120, 120, 0]);
 };
-const drawCylinder = (ctx, rootPoint, { radius, high }) => {
+const drawCylinder = (ctx, rootPoint, { radius, high, x, y, z }) => {
   radius = Math.round(radius);
   high = Math.round(high);
+  x = Math.round(Number(x));
+  y = Math.round(Number(y));
+  z = Math.round(Number(z));
 
-  let r1 = [radius - 40, 0, radius];
-  let r2 = [radius - 40, high, radius];
+  let r1 = [x - 40, y, z];
+
+  let r2 = [x - 40, y + high, z];
 
   const circleCoorList = getFullCoorListOfCircle(radius, {
-    x: radius - 40,
-    y: radius,
+    x: r1[0],
+    y: r1[2],
   });
   const bottomCircleList = circleCoorList.map((coor) => {
-    return [coor.x, 0, coor.y];
+    return [coor.x, r1[1], coor.y];
   });
   const topCircleList = circleCoorList.map((coor) => {
-    return [coor.x, high, coor.y];
+    return [coor.x, r2[1], coor.y];
   });
 
   const bottomCircle2DCoorLit = bottomCircleList.map((coor) => {
@@ -173,7 +182,6 @@ export default function draw_3D(
   cylinder
 ) {
   draw3DCoordiante(ctx, rootPoint, FRAME_WIDTH, FRAME_HEIGHT);
-  console.log(typeDraw);
   if (typeDraw == 1) {
     if (
       rectangular.long != 0 &&
