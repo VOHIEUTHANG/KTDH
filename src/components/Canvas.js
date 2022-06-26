@@ -19,6 +19,8 @@ function Canvas({
   const [locationCloud1, setLocationCloud1] = useState(-90);
   const [locationCloud2, setLocationCloud2] = useState(-20);
   const [locationCloud3, setLocationCloud3] = useState(90);
+  const [ratio, setRatio] = useState(0.2);
+  const [flowerDirection, setFlowerDirection] = useState("ZoomIn");
 
   const canvasRef = useRef();
   useEffect(() => {
@@ -43,7 +45,11 @@ function Canvas({
         locationCloud3,
         setWindmill,
         setHouse,
-        setCloud
+        setCloud,
+        ratio,
+        setRatio,
+        flowerDirection,
+        setFlowerDirection
       );
     }
 

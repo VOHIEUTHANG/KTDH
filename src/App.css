@@ -8,3 +8,19 @@
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
+
+.object {
+  cursor: pointer;
+}
+
+.object-detail {
+  right: 120%;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.object:hover > .object-detail {
+  visibility: visible;
+  opacity: 1;
+}

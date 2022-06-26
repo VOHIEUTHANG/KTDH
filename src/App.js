@@ -24,7 +24,6 @@ function App() {
 
   useEffect(() => {
     setIsDisplay(window?.innerWidth >= 1800);
-    console.log(window.innerWidth);
   });
 
   return (

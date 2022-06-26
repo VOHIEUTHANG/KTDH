@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 import {
   matrixMultiply,
   createRotateMatrix,
@@ -106,14 +107,21 @@ const getCoorListWidthBresenham = (x1, y1, x2, y2) => {
   }
   return coorList;
 };
-const getRotateCoorList = (initialCoorList, deg, translationPoint) => {
+const getRotateCoorList = (initialCoorList, deg, ...translationPoint) => {
+  let translateMatrix = createTranslationMatrix(
+    translationPoint[0].x,
+    translationPoint[0].y
+  );
+  if (translationPoint.length > 1) {
+    translateMatrix = matrixMultiply(
+      createTranslationMatrix(translationPoint[0].x, translationPoint[0].y),
+      createTranslationMatrix(translationPoint[1].x, translationPoint[1].y)
+    );
+  }
   return initialCoorList.map((coor) => {
     const coorItem = matrixMultiply(
       [[coor.x, coor.y, 1]],
-      matrixMultiply(
-        createRotateMatrix(deg),
-        createTranslationMatrix(translationPoint.x, translationPoint.y)
-      )
+      matrixMultiply(createRotateMatrix(deg), translateMatrix)
     );
     coorItem[0].pop();
     return coorItem[0].map((coor) => Math.round(coor));
@@ -796,11 +804,119 @@ const drawCloud = (
     color[2] + 3,
   ]);
 };
+const drawFlower = (
+  ctx,
+  rootPoint,
+  centerPoint,
+  radius,
+  ratio,
+  borderColor,
+  color
+) => {
+  const a = Math.round((radius + 1) * ratio);
+  const b = Math.round(5 * ratio);
+  const r = Math.round(radius * ratio);
+
+  const coorList = getElipseCoorList(ctx, rootPoint, a, b);
+
+  const rightCoorlist = getRotateCoorList(
+    coorList,
+    0,
+    { x: a, y: 0 },
+    centerPoint
+  );
+
+  const topCoorlist = getRotateCoorList(
+    coorList,
+    90,
+    { x: 0, y: a },
+    centerPoint
+  );
+
+  const leftCoorlist = getRotateCoorList(
+    coorList,
+    180,
+    { x: -a, y: 0 },
+    centerPoint
+  );
+  const bottomCoorlist = getRotateCoorList(
+    coorList,
+    270,
+    { x: 0, y: -a },
+    centerPoint
+  );
+
+  const pointInRightPetal = getRotateCoorList(
+    [{ x: 0, y: 0 }],
+    0,
+    { x: a, y: 0 },
+    centerPoint
+  );
+  const pointInTopPetal = getRotateCoorList(
+    [{ x: 0, y: 0 }],
+    90,
+    { x: 0, y: a },
+    centerPoint
+  );
+  const pointInLeftPetal = getRotateCoorList(
+    [{ x: 0, y: 0 }],
+    180,
+    { x: -a, y: 0 },
+    centerPoint
+  );
+  const pointInBottomPetal = getRotateCoorList(
+    [{ x: 0, y: 0 }],
+    270,
+    { x: 0, y: -a },
+    centerPoint
+  );
+
+  drawWidthArrayCoor(ctx, rootPoint, rightCoorlist, borderColor);
+  drawWidthArrayCoor(ctx, rootPoint, topCoorlist, borderColor);
+  drawWidthArrayCoor(ctx, rootPoint, leftCoorlist, borderColor);
+  drawWidthArrayCoor(ctx, rootPoint, bottomCoorlist, borderColor);
+
+  tintColor(
+    ctx,
+    rootPoint,
+    pointInRightPetal[0][0],
+    pointInRightPetal[0][1],
+    color,
+    borderColor
+  );
+  tintColor(
+    ctx,
+    rootPoint,
+    pointInTopPetal[0][0],
+    pointInTopPetal[0][1],
+    color,
+    borderColor
+  );
+  tintColor(
+    ctx,
+    rootPoint,
+    pointInLeftPetal[0][0],
+    pointInLeftPetal[0][1],
+    color,
+    borderColor
+  );
+  tintColor(
+    ctx,
+    rootPoint,
+    pointInBottomPetal[0][0],
+    pointInBottomPetal[0][1],
+    color,
+    borderColor
+  );
+
+  drawCircle(ctx, rootPoint, r, centerPoint);
+};
 
 export {
   drawRect,
   drawRectangle,
   putPixel,
+  drawFlower,
   drawTrapezoid,
   drawLineWithDefaulFunction as drawLine,
   drawTriangle,

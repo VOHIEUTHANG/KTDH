@@ -9,6 +9,7 @@ import {
   drawWidthObjectCoor,
   drawGrass,
   drawFence,
+  drawFlower,
   putPixel,
   CC_fromHumanToComputer,
 } from "./draw_functions";
@@ -25,14 +26,18 @@ const drawWindmill = (
   setLocationCloud2,
   setLocationCloud3,
   setWindmill,
-  setCloud
+  setCloud,
+  setRatio,
+  flowerDirection,
+  setFlowerDirection
 ) => {
-  const leftUpperPoint = { x: -70, y: 6 };
-  const leftBottomPoint = { x: -76, y: -70 };
+  const leftUpperPoint = { x: -80, y: 6 };
+  const leftBottomPoint = { x: -86, y: -70 };
   const smallWidth = 40;
   const largeWidth = smallWidth + (leftUpperPoint.x - leftBottomPoint.x) * 2;
   const pillarBaseHeight = 10;
   const pillarBaseWidth = largeWidth + 8;
+
   const triangleHeight = 20;
   const doorWidth = 26;
   const doorHeight = 26;
@@ -90,8 +95,8 @@ const drawWindmill = (
     ctx,
     rootPoint,
     centerCircle,
-    60,
-    50,
+    56,
+    44,
     10,
     [100, 100, 100],
     [230, 250, 200],
@@ -149,6 +154,16 @@ const drawWindmill = (
   //   setLocationCloud1((prev) => setLocationCloud(prev, cloud1Value, 1));
   //   setLocationCloud2((prev) => setLocationCloud(prev, cloud2Value, 2));
   //   setLocationCloud3((prev) => setLocationCloud(prev, cloud3Value, 3));
+  //   setRatio((prevRatio) => {
+  //     if (prevRatio > 0.6) {
+  //       setFlowerDirection("ZoomOut");
+  //       console.log("set flower direction ");
+  //     }
+  //     if (prevRatio < 0.3) {
+  //       setFlowerDirection("ZoomIn");
+  //     }
+  //     return flowerDirection == "ZoomIn" ? prevRatio + 0.1 : prevRatio - 0.1;
+  //   });
   //   setWindmill((prev) => {
   //     return {
   //       ...prev,
@@ -301,7 +316,6 @@ const drawFences = (ctx, rootPoint, maxX, y, width, height, ...rest) => {
 const drawSky = (...props) => {
   drawGrass(...props);
 };
-
 export default function draw_2D(
   ctx,
   rootPoint,
@@ -318,9 +332,14 @@ export default function draw_2D(
   locationCloud3,
   setWindmill,
   setHouse,
-  setCloud
+  setCloud,
+  ratio,
+  setRatio,
+  flowerDirection,
+  setFlowerDirection
 ) {
   const boundary_y = 40;
+
   drawSky(ctx, rootPoint, -120, 120, boundary_y, 80, [200, 228, 250, 0.8]);
 
   drawCloud(ctx, rootPoint, 12, 4, [255, 255, 251], {
@@ -348,7 +367,7 @@ export default function draw_2D(
   // putPixel(ctx, x1, y1, "red", 4);
   // putPixel(ctx, x2, y2, "red", 4);
 
-  // drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
+  drawGrass(ctx, rootPoint, -120, 120, -80, boundary_y, [70, 255, 50, 0.4]);
   drawFences(
     ctx,
     rootPoint,
@@ -373,6 +392,16 @@ export default function draw_2D(
     [118, 211, 232]
   );
 
+  drawFlower(
+    ctx,
+    rootPoint,
+    { x: -10, y: 20 },
+    6,
+    ratio,
+    [20, 200, 100],
+    [200, 50, 20]
+  );
+
   // RED POINT AT HERE ==============>
 
   drawWindmill(
@@ -387,6 +416,9 @@ export default function draw_2D(
     setLocationCloud2,
     setLocationCloud3,
     setWindmill,
-    setCloud
+    setCloud,
+    setRatio,
+    flowerDirection,
+    setFlowerDirection
   );
 }

@@ -132,7 +132,7 @@ const drawCylinder = (ctx, rootPoint, { radius, high, x, y, z }) => {
   drawText(
     ctx,
     "dodgerblue",
-    getText("O'", [r2[0] + 40, r2[2], r2[2]]),
+    getText("O'", [r2[0] + 40, r2[1], r2[2]]),
     r2X + 10,
     r2Y
   );

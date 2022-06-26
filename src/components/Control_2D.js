@@ -11,7 +11,7 @@ export default function Control_2D({
   cloud,
 }) {
   return (
-    <div className="ml-6 w-[400px] h-[800px] bg-white rounded-xl overflow-hidden p-10 flex flex-col justify-between">
+    <div className="ml-6 w-[400px] h-[800px] bg-white rounded-xl  p-10 flex flex-col justify-between">
       <p className="uppercase text-center text-xl font-semibold text-gray-500 mb-4">
         bảng điều khiển
       </p>
