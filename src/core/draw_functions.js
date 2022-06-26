@@ -1,4 +1,3 @@
-import { ConstructionOutlined } from "@mui/icons-material";
 import {
   matrixMultiply,
   createRotateMatrix,
@@ -572,7 +571,10 @@ const drawFourPropeller = (
 
   drawCircle(ctx, rootPoint, 6, centerCircle);
 
-  return rightCoorList[0];
+  return {
+    topUpperPointOfPropeller: rightCoorList[0],
+    coorList: rightCoorList,
+  };
 };
 const drawDoorOfWindmill = (
   ctx,
@@ -803,6 +805,7 @@ const drawCloud = (
     color[1],
     color[2] + 3,
   ]);
+  return circleCoorList;
 };
 const drawFlower = (
   ctx,

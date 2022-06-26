@@ -2,6 +2,8 @@ import ViewInArIcon from "@mui/icons-material/ViewInAr";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { Button } from "@mui/material/";
 import TextField from "./TextField";
+import { useContext } from "react";
+import { CoorListContext } from "../App";
 
 export default function Control_2D({
   ShowCoordinate,
@@ -10,6 +12,8 @@ export default function Control_2D({
   house,
   cloud,
 }) {
+  const { windmillCoorList, houseCoorList, cloudCoorList } =
+    useContext(CoorListContext);
   return (
     <div className="ml-6 w-[400px] h-[800px] bg-white rounded-xl  p-10 flex flex-col justify-between">
       <p className="uppercase text-center text-xl font-semibold text-gray-500 mb-4">
@@ -19,16 +23,19 @@ export default function Control_2D({
         <TextField
           img="https://cdn.pixabay.com/photo/2018/07/31/04/16/windmill-3574169_960_720.jpg"
           coorVal={windmill}
+          coorList={windmillCoorList}
         />
         <hr className="my-2" />
         <TextField
           img="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/suburban-house-royalty-free-image-1584972559.jpg"
           coorVal={house}
+          coorList={houseCoorList}
         />
         <hr className="my-2" />
         <TextField
           img="https://images.unsplash.com/photo-1569428034239-f9565e32e224?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80"
           coorVal={cloud}
+          coorList={cloudCoorList}
         />
       </div>
 

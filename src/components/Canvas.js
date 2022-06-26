@@ -12,6 +12,9 @@ function Canvas({
   typeDraw,
   rectangular,
   cylinder,
+  setHouseCoorList,
+  setCloudCoorList,
+  setWindmillCoorList,
 }) {
   const [timeoutID, setTimeoutID] = useState(-1);
   const [degree, setDegree] = useState(0);
@@ -49,7 +52,10 @@ function Canvas({
         ratio,
         setRatio,
         flowerDirection,
-        setFlowerDirection
+        setFlowerDirection,
+        setHouseCoorList,
+        setCloudCoorList,
+        setWindmillCoorList
       );
     }
 
